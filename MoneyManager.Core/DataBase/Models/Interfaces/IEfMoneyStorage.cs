@@ -3,12 +3,12 @@ using MoneyManager.Core.DataBase.Models.Interfaces.Base;
 
 namespace MoneyManager.Core.DataBase.Models.Interfaces
 {
-    public interface IEfMoneyStorage : IEfBaseEntity
+    public interface IEfMoneyStorage : IEfNamedEntity
     {
         [Required]
         public string Name { get; set; }
 
         [Required]
-        public double TotalSum { get; set; }
+        public decimal TotalSum { get; set; }
     }
 }

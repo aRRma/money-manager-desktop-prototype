@@ -17,21 +17,21 @@ namespace MoneyManager.Core.DataBase.Configurations
                     Id = 1,
                     CreateDate = DateTime.Now,
                     Name = MoneySourceType.CASH.GetDescription(),
-                    TotalSum = 1000.99,
+                    TotalSum = 1000.99m,
                 },
                 new()
                 {
                     Id = 2,
                     CreateDate = DateTime.Now,
                     Name = MoneySourceType.ECASH.GetDescription(),
-                    TotalSum = 888.99
+                    TotalSum = 888.99m
                 },
                 new()
                 {
                     Id = 3,
                     CreateDate = DateTime.Now,
                     Name = MoneySourceType.MONEYBOX.GetDescription(),
-                    TotalSum = 150000.99
+                    TotalSum = 150000.99m
                 },
             });
         }

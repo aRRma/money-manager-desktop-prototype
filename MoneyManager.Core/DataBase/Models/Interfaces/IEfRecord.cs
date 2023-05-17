@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MoneyManager.Core.DataBase.Models.Interfaces
 {
-    public interface IEfRecord : IEfBaseEntity
+    public interface IEfRecord : IEfNamedEntity
     {
         [Required]
         public string Name { get; set; }

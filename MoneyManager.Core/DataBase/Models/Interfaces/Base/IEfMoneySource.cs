@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MoneyManager.Core.DataBase.Models.Interfaces.Base
 {
-    public interface IEfMoneySource : IEfBaseEntity
+    public interface IEfMoneySource : IEfNamedEntity
     {
         [Required]
         public string Name { get; set; }

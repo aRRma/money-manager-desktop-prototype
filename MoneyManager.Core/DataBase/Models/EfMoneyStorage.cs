@@ -1,5 +1,6 @@
 ﻿using MoneyManager.Core.DataBase.Models.Base;
 using MoneyManager.Core.DataBase.Models.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoneyManager.Core.DataBase.Models
 {
@@ -10,7 +11,7 @@ namespace MoneyManager.Core.DataBase.Models
     {
         public long Id { get; set; }
         public string Name { get; set; }
-        public double TotalSum { get; set; }
+        public decimal TotalSum { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 
