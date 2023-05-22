@@ -39,6 +39,7 @@
                 Text="{Binding TotalSum}"
                 TextWrapping="Wrap" />
             <TextBox
+                Name="TextBoxSumDown"
                 Width="120"
                 Margin="160,60,0,0"
                 HorizontalAlignment="Left"
@@ -46,6 +47,7 @@
                 Text="SumDOWN"
                 TextWrapping="Wrap" />
             <TextBox
+                Name="TextBoxSumUp"
                 Width="120"
                 Margin="20,60,0,0"
                 HorizontalAlignment="Left"
@@ -57,12 +59,16 @@
                 Margin="30,100,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Command="{Binding AddMoneyCommand}"
+                CommandParameter="{Binding Text, ElementName=TextBoxSumUp}"
                 Content="Set +" />
             <Button
                 Width="100"
                 Margin="170,100,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Command="{Binding DenyMoneyCommand}"
+                CommandParameter="{Binding Text, ElementName=TextBoxSumDown}"
                 Content="Set -" />
         </Grid>
     </Grid>
