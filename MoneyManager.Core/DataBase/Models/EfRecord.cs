@@ -1,5 +1,4 @@
-﻿using MoneyManager.Core.DataBase.Models.Base;
-using MoneyManager.Core.DataBase.Models.Enums;
+﻿using MoneyManager.Core.DataBase.Models.Enums;
 using MoneyManager.Core.DataBase.Models.Interfaces;
 
 namespace MoneyManager.Core.DataBase.Models
@@ -13,9 +12,9 @@ namespace MoneyManager.Core.DataBase.Models
         public DateTime CreateDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 
-        public EfMetaLabel MetaLabel { get; set; }
-        public EfBaseCategory BaseCategory { get; set; }
-        public EfSubCategory SubCategory { get; set; }
-        public EfMoneyStorage MoneyStorage { get; set; }
+        public EfMetaLabel? MetaLabel { get; set; }
+        public EfBaseCategory? BaseCategory { get; set; }
+        public EfSubCategory? SubCategory { get; set; }
+        public EfMoneyStorage? MoneyStorage { get; set; }
     }
 }

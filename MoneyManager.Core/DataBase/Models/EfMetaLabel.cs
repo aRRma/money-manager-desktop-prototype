@@ -1,8 +1,7 @@
 ﻿using MoneyManager.Core.DataBase.Models.Enums;
-using MoneyManager.Core.DataBase.Models.Interfaces.Base;
-using System.ComponentModel.DataAnnotations.Schema;
+using MoneyManager.Core.DataBase.Models.Interfaces;
 
-namespace MoneyManager.Core.DataBase.Models.Base
+namespace MoneyManager.Core.DataBase.Models
 {
     /// <summary>
     /// Метка записи

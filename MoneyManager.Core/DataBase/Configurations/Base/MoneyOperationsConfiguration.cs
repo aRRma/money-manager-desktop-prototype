@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MoneyManager.Core.DataBase.Models.Base;
+using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Models.Enums;
 using MoneyManager.Core.Extensions;
 

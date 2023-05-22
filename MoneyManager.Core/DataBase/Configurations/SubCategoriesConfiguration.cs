@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MoneyManager.Core.DataBase.Models;
-using MoneyManager.Core.DataBase.Models.Constans;
+using MoneyManager.Core.DataBase.Models.Constants;
 
 namespace MoneyManager.Core.DataBase.Configurations
 {
@@ -15,43 +15,43 @@ namespace MoneyManager.Core.DataBase.Configurations
                 {
                     Id = 1,
                     CreateDate = DateTime.Now,
-                    Name = EfBaseModelConstans.SubCategoryRuMagnit,
+                    Name = EfBaseModelConstants.SubCategoryRuMagnit,
                 },
                 new()
                 {
                     Id = 2,
                     CreateDate = DateTime.Now,
-                    Name = EfBaseModelConstans.SubCategoryRu5ka,
+                    Name = EfBaseModelConstants.SubCategoryRu5ka,
                 },
                 new()
                 {
                     Id = 3,
                     CreateDate = DateTime.Now,
-                    Name = EfBaseModelConstans.SubCategoryRuOzon,
+                    Name = EfBaseModelConstants.SubCategoryRuOzon,
                 },
                 new()
                 {
                     Id = 4,
                     CreateDate = DateTime.Now,
-                    Name = EfBaseModelConstans.SubCategoryRuWildberries,
+                    Name = EfBaseModelConstants.SubCategoryRuWildberries,
                 },
                 new()
                 {
                     Id = 5,
                     CreateDate = DateTime.Now,
-                    Name = EfBaseModelConstans.SubCategoryRuUnderground,
+                    Name = EfBaseModelConstants.SubCategoryRuUnderground,
                 },
                 new()
                 {
                     Id = 6,
                     CreateDate = DateTime.Now,
-                    Name = EfBaseModelConstans.SubCategoryRuTrain,
+                    Name = EfBaseModelConstants.SubCategoryRuTrain,
                 },
                 new()
                 {
                     Id = 7,
                     CreateDate = DateTime.Now,
-                    Name = EfBaseModelConstans.SubCategoryRuKarting,
+                    Name = EfBaseModelConstants.SubCategoryRuKarting,
                 },
             });
         }

@@ -1,5 +1,4 @@
-﻿using MoneyManager.Core.DataBase.Models.Enums;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reflection;
 
 namespace MoneyManager.Core.Extensions

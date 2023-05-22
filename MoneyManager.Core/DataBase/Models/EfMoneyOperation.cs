@@ -1,7 +1,7 @@
 ﻿using MoneyManager.Core.DataBase.Models.Enums;
-using MoneyManager.Core.DataBase.Models.Interfaces.Base;
+using MoneyManager.Core.DataBase.Models.Interfaces;
 
-namespace MoneyManager.Core.DataBase.Models.Base
+namespace MoneyManager.Core.DataBase.Models
 {
     /// <summary>
     /// Тип операции

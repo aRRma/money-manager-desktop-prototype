@@ -1,5 +1,4 @@
-﻿using MoneyManager.Core.DataBase.Models.Base;
-using MoneyManager.Core.DataBase.Models.Interfaces;
+﻿using MoneyManager.Core.DataBase.Models.Interfaces;
 
 namespace MoneyManager.Core.DataBase.Models
 {
@@ -13,7 +12,7 @@ namespace MoneyManager.Core.DataBase.Models
         public DateTime CreateDate { get; set; }
         public DateTime? DeleteDate { get; set; }
 
-        public EfMetaLabel MetaLabel { get; set; }
+        public EfMetaLabel? MetaLabel { get; set; }
         public List<EfSubCategory> SubCategories { get; set; } = new();
         public List<EfRecord> Records { get; set; } = new();
     }

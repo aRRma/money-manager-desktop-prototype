@@ -7,9 +7,6 @@ namespace MoneyManager.Core.DataBase.Models.Interfaces
     public interface IEfRecord : IEfNamedEntity
     {
         [Required]
-        public string Name { get; set; }
-
-        [Required]
         public double Sum { get; set; }
 
         [Required]

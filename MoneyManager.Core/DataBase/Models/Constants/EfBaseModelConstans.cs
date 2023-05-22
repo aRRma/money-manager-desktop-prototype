@@ -1,6 +1,6 @@
-﻿namespace MoneyManager.Core.DataBase.Models.Constans
+﻿namespace MoneyManager.Core.DataBase.Models.Constants
 {
-    internal class EfBaseModelConstans
+    internal class EfBaseModelConstants
     {
         #region sub category
 

@@ -1,5 +1,4 @@
 ﻿using MoneyManager.Core.DataBase.Models.Interfaces.Base;
-using System.Collections.Generic;
 
 namespace MoneyManager.Core.DataBase.Repository.Interfaces
 {
@@ -16,6 +15,7 @@ namespace MoneyManager.Core.DataBase.Repository.Interfaces
         public Task<bool> Exist(T item, CancellationToken cancellationToken = default);
 
         public Task<bool> ExistId(long id, CancellationToken cancellationToken = default);
+
         public Task<IReadOnlyList<T>> Get(int count, int skip = 0, CancellationToken cancellationToken = default);
 
         public Task<IReadOnlyList<T>> GetAll(CancellationToken cancellationToken = default);

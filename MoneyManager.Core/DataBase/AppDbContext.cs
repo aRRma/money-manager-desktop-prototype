@@ -2,8 +2,7 @@
 using MoneyManager.Core.DataBase.Configurations;
 using MoneyManager.Core.DataBase.Configurations.Base;
 using MoneyManager.Core.DataBase.Models;
-using MoneyManager.Core.DataBase.Models.Base;
-using MoneyManager.Core.DataBase.Models.Constans;
+using MoneyManager.Core.DataBase.Models.Constants;
 using MoneyManager.Core.DataBase.Models.Enums;
 using MoneyManager.Core.Extensions;
 
@@ -34,6 +33,11 @@ namespace MoneyManager.Core.DataBase
             SetUpSubCategories();
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -46,11 +50,6 @@ namespace MoneyManager.Core.DataBase
             modelBuilder.ApplyConfiguration(new MoneyStoragesConfiguration());
             modelBuilder.ApplyConfiguration(new BaseCategoriesConfiguration());
             modelBuilder.ApplyConfiguration(new SubCategoriesConfiguration());
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
         }
 
         private void SetUpMoneyStorages()
@@ -89,22 +88,22 @@ namespace MoneyManager.Core.DataBase
             {
                 switch (subCategory.Name)
                 {
-                    case EfBaseModelConstans.SubCategoryRuMagnit:
-                    case EfBaseModelConstans.SubCategoryRu5ka:
+                    case EfBaseModelConstants.SubCategoryRuMagnit:
+                    case EfBaseModelConstants.SubCategoryRu5ka:
                         subCategory.MetaLabel = labes.Single(x => string.Equals(x.Name, MetaLabelType.EAT.GetDescription()));
                         subCategory.BaseCategory = categories.Single(x => string.Equals(x.Name, MetaLabelType.EAT.GetDescription()));
                         break;
-                    case EfBaseModelConstans.SubCategoryRuOzon:
-                    case EfBaseModelConstans.SubCategoryRuWildberries:
+                    case EfBaseModelConstants.SubCategoryRuOzon:
+                    case EfBaseModelConstants.SubCategoryRuWildberries:
                         subCategory.MetaLabel = labes.Single(x => string.Equals(x.Name, MetaLabelType.PURCHASES.GetDescription()));
                         subCategory.BaseCategory = categories.Single(x => string.Equals(x.Name, MetaLabelType.PURCHASES.GetDescription()));
                         break;
-                    case EfBaseModelConstans.SubCategoryRuUnderground:
-                    case EfBaseModelConstans.SubCategoryRuTrain:
+                    case EfBaseModelConstants.SubCategoryRuUnderground:
+                    case EfBaseModelConstants.SubCategoryRuTrain:
                         subCategory.MetaLabel = labes.Single(x => string.Equals(x.Name, MetaLabelType.TRANSPORT.GetDescription()));
                         subCategory.BaseCategory = categories.Single(x => string.Equals(x.Name, MetaLabelType.TRANSPORT.GetDescription()));
                         break;
-                    case EfBaseModelConstans.SubCategoryRuKarting:
+                    case EfBaseModelConstants.SubCategoryRuKarting:
                         subCategory.MetaLabel = labes.Single(x => string.Equals(x.Name, MetaLabelType.RELAXATION.GetDescription()));
                         subCategory.BaseCategory = categories.Single(x => string.Equals(x.Name, MetaLabelType.RELAXATION.GetDescription()));
                         break;

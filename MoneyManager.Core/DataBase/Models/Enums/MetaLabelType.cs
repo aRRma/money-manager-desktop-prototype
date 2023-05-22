@@ -51,7 +51,7 @@ namespace MoneyManager.Core.DataBase.Models.Enums
         /// Финансовые
         /// </summary>
         [Description("Финансовые")]
-        FINANSIAL,
+        FINANCIAL,
         /// <summary>
         /// Инвестиции
         /// </summary>
