@@ -24,7 +24,6 @@
     <PackageReference Include="Allure.NUnit" Version="2.9.5-preview.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="nunit" Version="3.13.3" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.16.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
   </ItemGroup>
 
