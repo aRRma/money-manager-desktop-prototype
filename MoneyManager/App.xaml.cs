@@ -58,6 +58,9 @@ public partial class App : Application
         // App Host
         services.AddHostedService<ApplicationHostService>();
 
+        // Configs
+        services.Configure<AppDbConfig>(context.Configuration.GetSection(nameof(AppDbConfig)));
+
         // Activation Handlers
 
         // Core Services

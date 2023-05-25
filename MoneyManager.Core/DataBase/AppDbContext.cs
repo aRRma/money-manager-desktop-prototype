@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MoneyManager.Core.DataBase.Configurations;
 using MoneyManager.Core.DataBase.Configurations.Base;
 using MoneyManager.Core.DataBase.Models;
@@ -21,16 +22,27 @@ namespace MoneyManager.Core.DataBase
         public DbSet<EfSubCategory> SubCategories { get; set; }
         public DbSet<EfRecord> Records { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        /// <summary>
+        /// Конструктор с параметрами
+        /// </summary>
+        /// <param name="options"></param>
+        public AppDbContext(DbContextOptions<AppDbContext> options, IOptions<AppDbConfig> config)
             : base(options)
         {
-            // удаляем и создаем базу при каждом запуске приложения
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
-            // базовая настройка для чистой базы
-            SetUpMoneyStorages();
-            SetUpBaseCategories(); 
-            SetUpSubCategories();
+            if (config?.Value?.AllowForceRecreateBase ?? false)
+                ForceRecreateBase();
+        }
+
+        /// <summary>
+        /// Конструктор с возможность пересоздания базы
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="forceDeleteBase"></param>
+        public AppDbContext(DbContextOptions<AppDbContext> options, bool forceDeleteBase)
+            : base(options)
+        {
+            if (forceDeleteBase)
+                ForceRecreateBase();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -50,6 +62,28 @@ namespace MoneyManager.Core.DataBase
             modelBuilder.ApplyConfiguration(new MoneyStoragesConfiguration());
             modelBuilder.ApplyConfiguration(new BaseCategoriesConfiguration());
             modelBuilder.ApplyConfiguration(new SubCategoriesConfiguration());
+        }
+
+        private void ForceRecreateBase()
+        {
+            // удаляем и создаем базу при каждом запуске приложения
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+            // базовая настройка для чистой базы
+            SetUpMoneyStorages();
+            SetUpBaseCategories();
+            SetUpSubCategories();
+
+            this.Records.Add(new()
+            {
+                Id = 1,
+                CreateDate = DateTime.Now,
+                Name = "Test record",
+                OperationType = MoneyOperationType.NONE,
+                Sum = 0
+            });
+
+            SaveChanges();
         }
 
         private void SetUpMoneyStorages()
