@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MoneyManager.Core.DataBase.Configurations;
-using MoneyManager.Core.DataBase.Configurations.Base;
 using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Models.Constants;
 using MoneyManager.Core.DataBase.Models.Enums;
@@ -54,14 +53,14 @@ namespace MoneyManager.Core.DataBase
         {
             base.OnModelCreating(modelBuilder);
 
-            // простые типы (enum'ы всякие)
-            modelBuilder.ApplyConfiguration(new MetaLabelsConfiguration());
-            modelBuilder.ApplyConfiguration(new MoneySourcesConfiguration());
-            modelBuilder.ApplyConfiguration(new MoneyOperationsConfiguration());
-
-            modelBuilder.ApplyConfiguration(new MoneyStoragesConfiguration());
-            modelBuilder.ApplyConfiguration(new BaseCategoriesConfiguration());
-            modelBuilder.ApplyConfiguration(new SubCategoriesConfiguration());
+            modelBuilder.ApplyConfiguration(new EfBaseCategoriesConfiguration());
+            modelBuilder.ApplyConfiguration(new EfEntityImageConfiguration());
+            modelBuilder.ApplyConfiguration(new EfMetaLabelsConfiguration());
+            modelBuilder.ApplyConfiguration(new EfMoneyOperationsConfiguration());
+            modelBuilder.ApplyConfiguration(new EfMoneySourcesConfiguration());
+            modelBuilder.ApplyConfiguration(new EfMoneyStoragesConfiguration());
+            modelBuilder.ApplyConfiguration(new EfRecordConfiguration());
+            modelBuilder.ApplyConfiguration(new EfSubCategoriesConfiguration());
         }
 
         private void ForceRecreateBase()
@@ -77,10 +76,13 @@ namespace MoneyManager.Core.DataBase
             this.Records.Add(new()
             {
                 Id = 1,
+                Uuid = Guid.NewGuid(),
                 CreateDate = DateTime.Now,
                 Name = "Test record",
                 OperationType = MoneyOperationType.NONE,
-                Sum = 0
+                Sum = 0,
+                MoneyStorage = MoneyStorages.Single(x => x.Id == 1),
+                BaseCategory = BaseCategories.Single(x => x.Id ==1)
             });
 
             SaveChanges();

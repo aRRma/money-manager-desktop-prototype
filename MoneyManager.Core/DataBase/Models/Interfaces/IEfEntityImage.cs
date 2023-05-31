@@ -2,8 +2,8 @@
 
 namespace MoneyManager.Core.DataBase.Models.Interfaces
 {
-    public interface IEfMoneyStorage : IEfNamedEntity
+    public interface IEfEntityImage : IEfNamedEntity
     {
-        public decimal TotalSum { get; set; }
+        public string Path { get; set; }
     }
 }

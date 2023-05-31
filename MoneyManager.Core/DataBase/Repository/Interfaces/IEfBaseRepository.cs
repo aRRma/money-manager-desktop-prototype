@@ -20,7 +20,7 @@ namespace MoneyManager.Core.DataBase.Repository.Interfaces
 
         public Task<IReadOnlyList<T>> GetAll(CancellationToken cancellationToken = default);
 
-        public Task<T?> GetById(long id, CancellationToken cancellationToken = default);
+        public Task<T> GetById(long id, CancellationToken cancellationToken = default);
 
         public Task<int> GetCount(CancellationToken cancellationToken = default);
 

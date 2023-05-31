@@ -103,11 +103,14 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             return await Items.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<T?> GetById(long id, CancellationToken cancellationToken = default)
+        public async Task<T> GetById(long id, CancellationToken cancellationToken = default)
         {
             Guard.IsGreaterThan(id, 0);
             // ищем с кэше dbset'a, а потом уже в базе
-            return await Items.FirstAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
+            return await Items
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+                .ConfigureAwait(false)
+                ?? new T();
         }
 
         public async Task<int> GetCount(CancellationToken cancellationToken = default)
@@ -136,7 +139,7 @@ namespace MoneyManager.Core.DataBase.Repository.Base
 
         public async Task<T> Update(T item, CancellationToken cancellationToken = default)
         {
-            Guard.IsNull(item);
+            Guard.IsNotNull(item);
 
             _dbContext.Update(item);
             await SaveChanges(cancellationToken).ConfigureAwait(false);

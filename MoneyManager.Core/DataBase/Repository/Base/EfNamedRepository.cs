@@ -5,7 +5,7 @@ using MoneyManager.Core.DataBase.Repository.Interfaces;
 
 namespace MoneyManager.Core.DataBase.Repository.Base
 {
-    internal class EfNamedRepository<T> : EfBaseRepository<T>, IEfNamedRepository<T> where T : class, IEfNamedEntity, new()
+    public class EfNamedRepository<T> : EfBaseRepository<T>, IEfNamedRepository<T> where T : class, IEfNamedEntity, new()
     {
         public EfNamedRepository(AppDbContext appDbContext)
             : base(appDbContext)
@@ -33,14 +33,19 @@ namespace MoneyManager.Core.DataBase.Repository.Base
         {
             Guard.IsNotNullOrEmpty(name);
 
-            return await Items.AnyAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken).ConfigureAwait(false);
+            return await Items
+                .AnyAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken)
+                .ConfigureAwait(false);
         }
 
-        public async Task<T?> GetByName(string name, CancellationToken cancellationToken = default)
+        public async Task<T> GetByName(string name, CancellationToken cancellationToken = default)
         {
             Guard.IsNotNullOrEmpty(name);
 
-            return await Items.FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken).ConfigureAwait(false);
+            return await Items
+                .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken)
+                .ConfigureAwait(false)
+                ?? new T();
         }
     }
 }

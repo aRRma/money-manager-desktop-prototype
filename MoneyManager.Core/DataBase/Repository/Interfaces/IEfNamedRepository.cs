@@ -6,7 +6,7 @@ namespace MoneyManager.Core.DataBase.Repository.Interfaces
     {
         public Task<bool> ExistByName(string name, CancellationToken cancellationToken = default);
 
-        public Task<T?> GetByName(string name, CancellationToken cancellationToken = default);
+        public Task<T> GetByName(string name, CancellationToken cancellationToken = default);
 
         public Task<T?> DeleteByName(string name, CancellationToken cancellationToken = default);
     }
