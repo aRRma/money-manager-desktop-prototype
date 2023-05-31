@@ -19,7 +19,6 @@ namespace MoneyManager.Core.DataBase.Models
         [Required]
         public DateTime CreateDate { get; set; }
         public DateTime? DeleteDate { get; set; }
-        // TODO валюта
 
         public EfEntityImage? Image { get; set; }
         public EfMoneySource? MoneySource { get; set; }

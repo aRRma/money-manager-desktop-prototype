@@ -33,6 +33,14 @@ namespace MoneyManager.Core.DataBase.Repository.Base
         {
             Guard.IsNotNullOrEmpty(name);
 
+            if (UseLocalView)
+            {
+                // TODO предположительно быстрее, но надо проверить
+                return await DataSet
+                    .AnyAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase))
+                    .ConfigureAwait(false);
+            }
+
             return await Items
                 .AnyAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken)
                 .ConfigureAwait(false);
@@ -41,6 +49,19 @@ namespace MoneyManager.Core.DataBase.Repository.Base
         public async Task<T> GetByName(string name, CancellationToken cancellationToken = default)
         {
             Guard.IsNotNullOrEmpty(name);
+
+            if (UseLocalView)
+            {
+                // TODO предположительно быстрее, но надо проверить
+                var localItem = await DataSet
+                    .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase))
+                    .ConfigureAwait(false);
+
+                if (localItem is not null)
+                    return await Items.SingleOrDefaultAsync(x => x.Id == localItem.Id)
+                        .ConfigureAwait(false)
+                        ?? new T();
+            }
 
             return await Items
                 .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken)

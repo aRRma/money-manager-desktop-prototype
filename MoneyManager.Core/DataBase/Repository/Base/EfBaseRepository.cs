@@ -9,6 +9,8 @@ namespace MoneyManager.Core.DataBase.Repository.Base
     {
         private readonly AppDbContext _dbContext;
 
+        public bool UseLocalView { get; set; }
+
         public EfBaseRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -106,9 +108,17 @@ namespace MoneyManager.Core.DataBase.Repository.Base
         public async Task<T> GetById(long id, CancellationToken cancellationToken = default)
         {
             Guard.IsGreaterThan(id, 0);
-            // ищем с кэше dbset'a, а потом уже в базе
+
             return await Items
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+                .ConfigureAwait(false)
+                ?? new T();
+        }
+
+        public async Task<T> GetByUuid(Guid uuid, CancellationToken cancellationToken = default)
+        {
+            return await Items
+                .FirstOrDefaultAsync(x => x.Uuid == uuid, cancellationToken)
                 .ConfigureAwait(false)
                 ?? new T();
         }

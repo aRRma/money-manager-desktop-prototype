@@ -6,16 +6,49 @@ namespace MoneyManager.Core.Extensions
     {
         public static Dictionary<string, string> ToDicDescription(this EfMoneyStorage storage)
         {
-            return new()
+            var type = storage.GetType();
+            var props = type.GetProperties();
+            var dic = new Dictionary<string, string>();
+
+            foreach (var item in props)
             {
-                { $"Id", $"{storage.Id}" },
-                { $"Name", $"{storage.Name}" },
-                { $"TotalSum", $"{storage.TotalSum}" },
-                { $"CreateDate", $"{storage.CreateDate}" },
-                { $"ImageId", $"{storage.Image?.Id}" },
-                { $"MoneySourceName", $"{storage.MoneySource?.Name}" },
-                { $"RecordsCount", $"{storage.Records?.Count}" }
-            };
+                string key;
+                string value;
+
+                if (item.PropertyType == typeof(EfEntityImage))
+                {
+                    var propVal = item.GetValue(storage);
+                    key = "ImageId";
+                    value = propVal is not null
+                        ? ((EfEntityImage)propVal).Id.ToString()
+                        : "";
+                }
+                else if (item.PropertyType == typeof(EfMoneySource))
+                {
+                    var propVal = item.GetValue(storage);
+                    key = "MoneySourceName";
+                    value = propVal is not null
+                        ? ((EfMoneySource)propVal).Name
+                        : "";
+                }
+                else if (item.PropertyType == typeof(List<EfRecord>))
+                {
+                    var propVal = item.GetValue(storage);
+                    key = "RecordsCount";
+                    value = propVal is not null
+                        ? ((List<EfRecord>)propVal).Count.ToString()
+                        : "";
+                }
+                else
+                {
+                    key = item.Name;
+                    value = item.GetValue(storage)?.ToString() ?? "";
+                }
+
+                dic.Add(key, value);
+            }
+
+            return dic;
         }
     }
 }

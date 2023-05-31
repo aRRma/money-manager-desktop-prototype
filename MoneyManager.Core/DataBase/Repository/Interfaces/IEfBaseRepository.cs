@@ -4,6 +4,8 @@ namespace MoneyManager.Core.DataBase.Repository.Interfaces
 {
     public interface IEfBaseRepository<T> where T : IEfBaseEntity
     {
+        public bool UseLocalView { get; set; }
+
         public Task<T> Add(T item, CancellationToken cancellationToken = default);
 
         public Task<IReadOnlyList<T>> Add(IEnumerable<T> items, CancellationToken cancellationToken = default);
@@ -21,6 +23,8 @@ namespace MoneyManager.Core.DataBase.Repository.Interfaces
         public Task<IReadOnlyList<T>> GetAll(CancellationToken cancellationToken = default);
 
         public Task<T> GetById(long id, CancellationToken cancellationToken = default);
+
+        public Task<T> GetByUuid(Guid uuid, CancellationToken cancellationToken = default);
 
         public Task<int> GetCount(CancellationToken cancellationToken = default);
 
