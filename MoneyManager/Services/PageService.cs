@@ -16,7 +16,7 @@ public class PageService : IPageService
     public PageService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        Configure<MainViewModel, MainPage>();
+        Configure<MoneyStorageViewModel, MoneyStoragePage>();
         Configure<SettingsViewModel, SettingsPage>();
     }
 

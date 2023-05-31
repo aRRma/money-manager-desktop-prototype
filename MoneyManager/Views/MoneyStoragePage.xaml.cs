@@ -4,9 +4,9 @@ using MoneyManager.ViewModels;
 
 namespace MoneyManager.Views;
 
-public partial class MainPage : Page
+public partial class MoneyStoragePage : Page
 {
-    public MainPage(MainViewModel viewModel)
+    public MoneyStoragePage(MoneyStorageViewModel viewModel)
     {
         InitializeComponent();
         DataContext = viewModel;

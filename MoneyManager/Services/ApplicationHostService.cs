@@ -84,7 +84,7 @@ public class ApplicationHostService : IHostedService
             _shellWindow = _serviceProvider.GetService(typeof(IShellWindow)) as IShellWindow;
             _navigationService.Initialize(_shellWindow.GetNavigationFrame());
             _shellWindow.ShowWindow();
-            _navigationService.NavigateTo(typeof(MainViewModel).FullName);
+            _navigationService.NavigateTo(typeof(MoneyStorageViewModel).FullName);
             await Task.CompletedTask;
         }
     }

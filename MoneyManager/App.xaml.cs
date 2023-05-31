@@ -1,9 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MoneyManager.Contracts.Services;
 using MoneyManager.Contracts.Views;
 using MoneyManager.Core.Contracts.Services;
+using MoneyManager.Core.DataBase;
+using MoneyManager.Core.DataBase.Models;
+using MoneyManager.Core.DataBase.Repository;
 using MoneyManager.Core.Services;
 using MoneyManager.Models;
 using MoneyManager.Services;
@@ -13,8 +17,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using MoneyManager.Core.DataBase;
-using Microsoft.EntityFrameworkCore;
 
 namespace MoneyManager;
 
@@ -25,7 +27,10 @@ namespace MoneyManager;
 // Tracking issue for improving this is https://github.com/dotnet/wpf/issues/1946
 public partial class App : Application
 {
+    private string DEF_CONFIG_FILE_NAME = "appsettings.json";
+
     private IHost _host;
+    private IConfiguration _configuration;
 
     public T GetService<T>()
         where T : class
@@ -39,35 +44,42 @@ public partial class App : Application
     {
         var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
+        // Host.CreateDefaultBuilder сам добавляет appsettings.json автоматом
+        // Но как вариант так можно подгружать другие конфиги
+        //var configBuilder = new ConfigurationBuilder()
+        //    .AddJsonFile($"{DEF_CONFIG_FILE_NAME}", optional: false, reloadOnChange: true);
+        //_configuration = configBuilder.Build();
+
         // For more information about .NET generic host see  https://docs.microsoft.com/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0
         _host = Host.CreateDefaultBuilder(e.Args)
-                .ConfigureAppConfiguration(c =>
-                {
-                    c.SetBasePath(appLocation);
-                })
-                .ConfigureServices(ConfigureServices)
-                .Build();
+            .ConfigureAppConfiguration(c =>
+            {
+                c.SetBasePath(appLocation);
+            })
+            .ConfigureServices(ConfigureServices)
+            .Build();
 
         await _host.StartAsync();
     }
 
     private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
-        // TODO: Register your services, viewmodels and pages here
+        // Configuration
+        _configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
+        services.Configure<AppDbConfig>(context.Configuration.GetSection(nameof(AppDbConfig)));
 
         // App Host
         services.AddHostedService<ApplicationHostService>();
 
-        // Configs
-        services.Configure<AppDbConfig>(context.Configuration.GetSection(nameof(AppDbConfig)));
-
-        // Activation Handlers
-
         // Core Services
         services.AddSingleton<IFileService, FileService>();
+
+        // Data
         services.AddDbContextFactory<AppDbContext>(_ => _
-            .UseSqlite(@"Data Source = data.db")
+            .UseSqlite($"Data Source = {_configuration["AppDbConfig:DbName"]}")
             .LogTo(Console.WriteLine));
+        services.AddTransient<EfStorageRepository>();
 
         // Services
         services.AddSingleton<IApplicationInfoService, ApplicationInfoService>();
@@ -81,14 +93,11 @@ public partial class App : Application
         services.AddTransient<IShellWindow, ShellWindow>();
         services.AddTransient<ShellViewModel>();
 
-        services.AddTransient<MainViewModel>();
-        services.AddTransient<MainPage>();
+        services.AddTransient<MoneyStorageViewModel>();
+        services.AddTransient<MoneyStoragePage>();
 
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<SettingsPage>();
-
-        // Configuration
-        services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
     }
 
     private async void OnExit(object sender, ExitEventArgs e)
