@@ -20,6 +20,7 @@ namespace MoneyManager.Core.DataBase
         public DbSet<EfBaseCategory> BaseCategories { get; set; }
         public DbSet<EfSubCategory> SubCategories { get; set; }
         public DbSet<EfRecord> Records { get; set; }
+        public DbSet<EfEntityImage> EntityImages { get; set; }
 
         /// <summary>
         /// Конструктор с параметрами

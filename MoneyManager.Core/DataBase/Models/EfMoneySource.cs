@@ -1,27 +1,41 @@
 ﻿using MoneyManager.Core.DataBase.Models.Enums;
 using MoneyManager.Core.DataBase.Models.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoneyManager.Core.DataBase.Models
 {
     /// <summary>
     /// Источник денег
     /// </summary>
+    [Table("money_sources")]
     public class EfMoneySource : IEfMoneySource
     {
         [Required]
+        [Column("id")]
         public long Id { get; set; }
-        [Required]
-        public Guid Uuid { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public MoneySourceType SourceType { get; set; }
-        [Required]
-        public DateTime CreateDate { get; set; }
-        public DateTime? DeleteDate { get; set; }
-        // TODO валюта
 
+        [Required]
+        [Column("uuid")]
+        public Guid Uuid { get; set; }
+
+        [Required]
+        [Column("name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Column("source_type")]
+        public MoneySourceType SourceType { get; set; }
+
+        [Required]
+        [Column("create_date")]
+        public DateTime CreateDate { get; set; }
+
+        [Column("delete_date")]
+        public DateTime? DeleteDate { get; set; }
+
+
+        // TODO валюта
         public EfEntityImage? Image { get; set; }
     }
 }
