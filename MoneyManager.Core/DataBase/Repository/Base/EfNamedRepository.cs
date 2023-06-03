@@ -5,7 +5,7 @@ using MoneyManager.Core.DataBase.Repository.Interfaces;
 
 namespace MoneyManager.Core.DataBase.Repository.Base
 {
-    public class EfNamedRepository<T> : EfBaseRepository<T>, IEfNamedRepository<T> where T : class, IEfNamedEntity, new()
+    public abstract class EfNamedRepository<T> : EfBaseRepository<T>, IEfNamedRepository<T> where T : class, IEfNamedEntity, new()
     {
         public EfNamedRepository(AppDbContext appDbContext)
             : base(appDbContext)

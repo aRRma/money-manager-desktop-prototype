@@ -5,13 +5,15 @@ using System.Globalization;
 
 namespace MoneyManager.Core.DataBase.Repository
 {
-    public class EfStorageRepository : EfNamedRepository<EfMoneyStorage>
+    public sealed class EfStorageRepository : EfNamedRepository<EfMoneyStorage>
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
-        public EfStorageRepository(AppDbContext dbContext)
+        public EfStorageRepository(AppDbContext dbContext, ILogger logger)
             : base(dbContext)
         {
+            _logger = logger;
+
             // TODO мож сюда какой-то валидатор надо?
             // в валидаторе должны быть правила типо макс сумма. минимальная, можно ли в минус уходить это все проверять перед операциями.
         }

@@ -5,11 +5,9 @@ using MoneyManager.Core.DataBase.Repository.Interfaces;
 
 namespace MoneyManager.Core.DataBase.Repository.Base
 {
-    public class EfBaseRepository<T> : IEfBaseRepository<T> where T : class, IEfBaseEntity, new()
+    public abstract class EfBaseRepository<T> : IEfBaseRepository<T> where T : class, IEfBaseEntity, new()
     {
         private readonly AppDbContext _dbContext;
-
-        public bool UseLocalView { get; set; }
 
         public EfBaseRepository(AppDbContext dbContext)
         {
@@ -19,6 +17,8 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             //TODO возможно не надо инжектить DbContext, а запрашивать его через фабрику в методах
             //т.к. саму репу лучше делать одиночкой дабы не плодить обьекты
         }
+
+        public bool UseLocalView { get; set; }
 
         protected DbSet<T> DataSet { get; init; }
 
