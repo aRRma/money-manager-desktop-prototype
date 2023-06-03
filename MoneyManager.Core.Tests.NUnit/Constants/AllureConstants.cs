@@ -16,7 +16,8 @@
 
         #region allure suite
         public const string SuiteDatabase = "База данных";
-        public const string SuiteDatabaseDbContext = "DbContext";
+        public const string SuiteDatabaseDbContext = "Создание DbContext";
+        public const string SuiteDatabaseRawCrud = "Сырые CRUD операции";
         #endregion allure suite
     }
 }
