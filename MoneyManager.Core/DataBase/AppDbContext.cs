@@ -86,6 +86,15 @@ namespace MoneyManager.Core.DataBase
                 BaseCategory = BaseCategories.Single(x => x.Id ==1)
             });
 
+            this.EntityImages.Add(new()
+            {
+                Id = 1,
+                Uuid = Guid.NewGuid(),
+                CreateDate = DateTime.Now,
+                Name = "Test image path",
+                Path = "./"
+            });
+
             SaveChanges();
         }
 
