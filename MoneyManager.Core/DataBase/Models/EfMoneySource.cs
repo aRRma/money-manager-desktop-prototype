@@ -37,5 +37,16 @@ namespace MoneyManager.Core.DataBase.Models
 
         // TODO валюта
         public EfEntityImage? Image { get; set; }
+
+        public static EfMoneySource GetDefaultEntity()
+        {
+            return new()
+            {
+                Uuid = Guid.NewGuid(),
+                Name = "Default base category name",
+                SourceType = MoneySourceType.NONE,
+                CreateDate = DateTime.Now,
+            };
+        }
     }
 }

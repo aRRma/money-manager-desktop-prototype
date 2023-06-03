@@ -24,9 +24,9 @@ namespace MoneyManager.Core.DataBase.Repository.Base
 
         protected IQueryable<T> Items => DataSet;
 
-        public async Task<T> Add(T item, CancellationToken cancellationToken = default)
+        public async Task<T> AddAsync(T item, CancellationToken cancellationToken = default)
         {
-            Guard.IsNull(item);
+            Guard.IsNotNull(item);
 
             await _dbContext.AddAsync(item, cancellationToken).ConfigureAwait(false);
             await SaveChanges(cancellationToken).ConfigureAwait(false);
@@ -34,9 +34,9 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             return item;
         }
 
-        public async Task<IReadOnlyList<T>> Add(IEnumerable<T> items, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<T>> AddAsync(IEnumerable<T> items, CancellationToken cancellationToken = default)
         {
-            Guard.IsNull(items);
+            Guard.IsNotNull(items);
 
             await _dbContext.AddRangeAsync(items, cancellationToken).ConfigureAwait(false);
             await SaveChanges(cancellationToken).ConfigureAwait(false);
@@ -44,11 +44,11 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             return items.ToList();
         }
 
-        public async Task<T?> Delete(T item, CancellationToken cancellationToken = default)
+        public async Task<T?> DeleteAsync(T item, CancellationToken cancellationToken = default)
         {
-            Guard.IsNull(item);
+            Guard.IsNotNull(item);
 
-            if (!await ExistId(item.Id, cancellationToken).ConfigureAwait(false))
+            if (!await ExistIdAsync(item.Id, cancellationToken).ConfigureAwait(false))
                 return null;
 
             _dbContext.Remove(item);
@@ -57,7 +57,7 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             return item;
         }
 
-        public async Task<T?> DeleteById(long id, CancellationToken cancellationToken = default)
+        public async Task<T?> DeleteByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             Guard.IsGreaterThan(id, 0);
 
@@ -70,24 +70,24 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             if (item is null)
                 return null;
 
-            return await Delete(item, cancellationToken).ConfigureAwait(false);
+            return await DeleteAsync(item, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<bool> Exist(T item, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistAsync(T item, CancellationToken cancellationToken = default)
         {
-            Guard.IsNull(item);
+            Guard.IsNotNull(item);
 
             return await Items.AnyAsync(x => x.Id == item.Id).ConfigureAwait(false);
         }
 
-        public async Task<bool> ExistId(long id, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistIdAsync(long id, CancellationToken cancellationToken = default)
         {
             Guard.IsGreaterThan(id, 0);
 
             return await Items.AnyAsync(x => x.Id == id).ConfigureAwait(false);
         }
 
-        public async Task<IReadOnlyList<T>> Get(int count, int skip = 0, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<T>> GetAsync(int count, int skip = 0, CancellationToken cancellationToken = default)
         {
             if (count <= 0)
                 return new List<T>().AsReadOnly();
@@ -100,12 +100,12 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             return await query.Take(count).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IReadOnlyList<T>> GetAll(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await Items.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<T> GetById(long id, CancellationToken cancellationToken = default)
+        public async Task<T> GetByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             Guard.IsGreaterThan(id, 0);
 
@@ -115,7 +115,7 @@ namespace MoneyManager.Core.DataBase.Repository.Base
                 ?? new T();
         }
 
-        public async Task<T> GetByUuid(Guid uuid, CancellationToken cancellationToken = default)
+        public async Task<T> GetByUuidAsync(Guid uuid, CancellationToken cancellationToken = default)
         {
             return await Items
                 .FirstOrDefaultAsync(x => x.Uuid == uuid, cancellationToken)
@@ -123,12 +123,12 @@ namespace MoneyManager.Core.DataBase.Repository.Base
                 ?? new T();
         }
 
-        public async Task<int> GetCount(CancellationToken cancellationToken = default)
+        public async Task<int> GetCountAsync(CancellationToken cancellationToken = default)
         {
             return await Items.CountAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IEfPage<T>> GetPage(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+        public async Task<IEfPage<T>> GetPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
         {
             Guard.IsGreaterThan(pageIndex, -1);
             Guard.IsGreaterThan(pageSize, -1);
@@ -147,7 +147,7 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             return new EfPage<T>(items, totalCount, pageIndex, pageSize);
         }
 
-        public async Task<T> Update(T item, CancellationToken cancellationToken = default)
+        public async Task<T> UpdateAsync(T item, CancellationToken cancellationToken = default)
         {
             Guard.IsNotNull(item);
 

@@ -29,5 +29,16 @@ namespace MoneyManager.Core.DataBase.Models
 
         [Column("delete_date")]
         public DateTime? DeleteDate { get; set; }
+
+        public static EfEntityImage GetDefaultEntity()
+        {
+            return new()
+            {
+                Uuid = Guid.NewGuid(),
+                Name = "Default base category name",
+                Path = "./",
+                CreateDate = DateTime.Now,
+            };
+        }
     }
 }

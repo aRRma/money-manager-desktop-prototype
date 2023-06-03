@@ -37,5 +37,16 @@ namespace MoneyManager.Core.DataBase.Models
         public EfEntityImage? Image { get; set; }
         public EfMoneySource? MoneySource { get; set; }
         public virtual List<EfRecord> Records { get; set; } = new();
+
+        public static EfMoneyStorage GetDefaultEntity()
+        {
+            return new()
+            {
+                Uuid = Guid.NewGuid(),
+                Name = "Default base category name",
+                TotalSum = 0,
+                CreateDate = DateTime.Now,
+            };
+        }
     }
 }

@@ -18,6 +18,13 @@ namespace MoneyManager.Core.DataBase.Repository
             // в валидаторе должны быть правила типо макс сумма. минимальная, можно ли в минус уходить это все проверять перед операциями.
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="sum"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">Если item null</exception>
         public async Task<bool> MoneyAdd(EfMoneyStorage item, string sum)
         {
             sum = sum.Replace('.', ',');
@@ -28,7 +35,7 @@ namespace MoneyManager.Core.DataBase.Repository
 
                 try
                 {
-                    await Update(item).ConfigureAwait(false);
+                    await UpdateAsync(item).ConfigureAwait(false);
                     return true;
                 }
                 catch (Exception ex)
@@ -50,7 +57,7 @@ namespace MoneyManager.Core.DataBase.Repository
 
                 try
                 {
-                    await Update(item).ConfigureAwait(false);
+                    await UpdateAsync(item).ConfigureAwait(false);
                     return true;
                 }
                 catch (Exception ex)

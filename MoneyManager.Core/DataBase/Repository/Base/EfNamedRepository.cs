@@ -13,10 +13,11 @@ namespace MoneyManager.Core.DataBase.Repository.Base
 
         }
 
-        public async Task<T?> DeleteByName(string name, CancellationToken cancellationToken = default)
+        public async Task<T?> DeleteByNameAsync(string name, CancellationToken cancellationToken = default)
         {
             Guard.IsNotNullOrEmpty(name);
 
+            //var item = DataSet.Local.FirstOrDefault(x => EF.Functions.Like(x.Name, name));
             var item = DataSet.Local.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase));
             if (item is null)
                 item = await Items
@@ -26,10 +27,10 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             if (item is null)
                 return null;
 
-            return await Delete(item, cancellationToken).ConfigureAwait(false);
+            return await DeleteAsync(item, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<bool> ExistByName(string name, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistByNameAsync(string name, CancellationToken cancellationToken = default)
         {
             Guard.IsNotNullOrEmpty(name);
 
@@ -42,11 +43,12 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             }
 
             return await Items
-                .AnyAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken)
+                //.AnyAsync(x => string.Equals(x.Name, name, StringComparison.InvariantCultureIgnoreCase), cancellationToken)
+                .AnyAsync(x => EF.Functions.Like(x.Name, name), cancellationToken) // для sqlite'a like регистронезависимый
                 .ConfigureAwait(false);
         }
 
-        public async Task<T> GetByName(string name, CancellationToken cancellationToken = default)
+        public async Task<T> GetByNameAsync(string name, CancellationToken cancellationToken = default)
         {
             Guard.IsNotNullOrEmpty(name);
 

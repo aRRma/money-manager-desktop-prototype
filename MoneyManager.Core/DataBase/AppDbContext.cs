@@ -8,7 +8,7 @@ using MoneyManager.Core.Extensions;
 
 namespace MoneyManager.Core.DataBase
 {
-    public sealed class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
         // простые типы (enum'ы всякие)
         public DbSet<EfMoneyOperation> MoneyOperations { get; set; }

@@ -31,5 +31,15 @@ namespace MoneyManager.Core.DataBase.Models
         public EfMetaLabel? MetaLabel { get; set; }
         public EfBaseCategory? BaseCategory { get; set; }
         public virtual List<EfSubCategory> SubCategories { get; set; } = new();
+
+        public static EfSubCategory GetDefaultEntity()
+        {
+            return new()
+            {
+                Uuid = Guid.NewGuid(),
+                Name = "Default base category name",
+                CreateDate = DateTime.Now,
+            };
+        }
     }
 }

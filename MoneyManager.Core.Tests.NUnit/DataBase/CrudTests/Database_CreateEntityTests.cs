@@ -1,7 +1,5 @@
 ﻿using Allure.Net.Commons;
-using MoneyManager.Core.DataBase;
 using MoneyManager.Core.DataBase.Models;
-using MoneyManager.Core.DataBase.Models.Enums;
 using MoneyManager.Core.Tests.NUnit.Helpers;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
@@ -24,54 +22,26 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.CrudTests
         [AllureDescription("Проверка успешного создания простых сущностей")]
         public async Task Create_AddSimpleEntity_WhenDone()
         {
-            var dbName = default(string);
-            using var dbContext = AllureLifecycle.Instance.WrapInStep(() =>
-            {
-                var options = DbContextHelpers.GetDataBaseOptions<AppDbContext>(out dbName);
-                var dbContext = new AppDbContext(options, true);
-                Console.WriteLine($"Create base [{dbName}]");
-                return dbContext;
-            }, "Создание контекста и базы данных");
+            using var context = DbContextTestHelpers.CreateAppDbContext();
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
             {
-                dbContext.MoneyOperations.Add(new EfMoneyOperation()
-                {
-                    CreateDate = DateTime.Now,
-                    DeleteDate = DateTime.Now,
-                    Name = "Test",
-                    OperationType = MoneyOperationType.INCOME,
-                    Uuid = Guid.NewGuid()
-                });
-                var count = await dbContext.SaveChangesAsync();
+                context.MoneyOperations.Add(EfMoneyOperation.GetDefaultEntity());
+                var count = await context.SaveChangesAsync();
                 Assert.AreEqual(count, 1);
             }, $"Создание сущности [{nameof(EfMoneyOperation)}]");
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
             {
-                dbContext.MoneySources.Add(new EfMoneySource()
-                {
-                    CreateDate = DateTime.Now,
-                    DeleteDate = DateTime.Now,
-                    Name = "Test",
-                    SourceType = MoneySourceType.CASH,
-                    Uuid = Guid.NewGuid()
-                });
-                var count = await dbContext.SaveChangesAsync();
+                context.MoneySources.Add(EfMoneySource.GetDefaultEntity());
+                var count = await context.SaveChangesAsync();
                 Assert.AreEqual(count, 1);
             }, $"Создание сущности [{nameof(EfMoneySource)}]");
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
             {
-                dbContext.MetaLabels.Add(new EfMetaLabel()
-                {
-                    CreateDate = DateTime.Now,
-                    DeleteDate = DateTime.Now,
-                    Name = "Test",
-                    RecordLabel = MetaLabelType.EAT,
-                    Uuid = Guid.NewGuid()                    
-                });
-                var count = await dbContext.SaveChangesAsync();
+                context.MetaLabels.Add(EfMetaLabel.GetDefaultEntity());
+                var count = await context.SaveChangesAsync();
                 Assert.AreEqual(count, 1);
             }, $"Создание сущности [{nameof(EfMetaLabel)}]");
         }

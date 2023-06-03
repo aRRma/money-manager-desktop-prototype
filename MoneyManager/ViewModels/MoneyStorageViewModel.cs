@@ -25,7 +25,7 @@ public partial class MoneyStorageViewModel : ObservableObject
 
         Task.Run(async () =>
         {
-            MoneyStorages = new ObservableCollection<EfMoneyStorage>(await _storageRepository.GetAll());
+            MoneyStorages = new ObservableCollection<EfMoneyStorage>(await _storageRepository.GetAllAsync());
             CurrentStorage = MoneyStorages.First();
             CurrentStorageDescription = CurrentStorage.ToDicDescription();
         });

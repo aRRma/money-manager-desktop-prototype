@@ -1,8 +1,5 @@
 ﻿using Allure.Net.Commons;
-using Microsoft.EntityFrameworkCore;
-using MoneyManager.Core.DataBase;
 using MoneyManager.Core.DataBase.Models.Interfaces.Base;
-using MoneyManager.Core.Tests.NUnit.Constants;
 using MoneyManager.Core.Tests.NUnit.Helpers;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
@@ -21,16 +18,8 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase
     [AllureSeverity(SeverityLevel.critical)]
     internal class Database_DbContextTests
     {
-        private const string DB_NAME = DatabaseConstants.DEFAULT_DB_NAME;
-
-        private readonly DbContextOptionsBuilder<AppDbContext> _dbContextOptionsBuilder;
-        private readonly DbContextOptions<AppDbContext> _dbContextOptions;
-
         public Database_DbContextTests()
         {
-            // дефолтные опции базы
-            _dbContextOptionsBuilder = new DbContextOptionsBuilder<AppDbContext>().UseSqlite($"Data Source = {DB_NAME}");
-            _dbContextOptions = _dbContextOptionsBuilder.Options;
         }
 
         [OneTimeSetUp]
@@ -61,13 +50,8 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase
         [AllureDescription("Проверка успешного создания базы")]
         public void DbContext_Create_WhenDone()
         {
-            var dbName = AllureLifecycle.Instance.WrapInStep(() =>
-            {
-                var options = DbContextHelpers.GetDataBaseOptions<AppDbContext>(out var dbName);
-                using var dbContext = new AppDbContext(options, true);
-                Console.WriteLine($"Create base [{dbName}]");
-                return dbName;
-            }, "Создание контекста и базы данных");
+            using var context = DbContextTestHelpers.CreateAppDbContext();
+            var dbName = DbContextTestHelpers.GetDbNameFromDbContext(context);
 
             AllureLifecycle.Instance.WrapInStep(() =>
             {
@@ -80,23 +64,15 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase
         [AllureDescription("Проверка выборки из ранее созданной базы")]
         public void DbContext_CreateAndSelectData_WhenDone()
         {
-            var dbName = default(string);
-
-            using var dbContext = AllureLifecycle.Instance.WrapInStep(() =>
-            {
-                var options = DbContextHelpers.GetDataBaseOptions<AppDbContext>(out dbName);
-                var dbContext = new AppDbContext(options, true);
-                Console.WriteLine($"Create base [{dbName}]");
-                return dbContext;
-            }, "Создание контекста и базы данных");
+            using var context = DbContextTestHelpers.CreateAppDbContext();
 
             AllureLifecycle.Instance.WrapInStep(() =>
             {
-                var props = dbContext.GetType().GetProperties();
+                var props = context.GetType().GetProperties();
 
                 foreach (var item in props)
                 {
-                    if (item.GetValue(dbContext) is IQueryable<IEfNamedEntity> data)
+                    if (item.GetValue(context) is IQueryable<IEfNamedEntity> data)
                     {
                         var material = data?.ToList();
                         Console.WriteLine($"DbSet name - [{item.Name}], count - [{material.Capacity}]");

@@ -41,5 +41,17 @@ namespace MoneyManager.Core.DataBase.Models
         public EfBaseCategory? BaseCategory { get; set; }
         public EfSubCategory? SubCategory { get; set; }
         public EfMoneyStorage? MoneyStorage { get; set; }
+
+        public static EfRecord GetDefaultEntity()
+        {
+            return new()
+            {
+                Uuid = Guid.NewGuid(),
+                Name = "Default base category name",
+                Sum = 0,
+                OperationType = MoneyOperationType.NONE,
+                CreateDate = DateTime.Now,
+            };
+        }
     }
 }

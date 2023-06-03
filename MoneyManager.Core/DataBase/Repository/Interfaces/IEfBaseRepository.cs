@@ -6,30 +6,30 @@ namespace MoneyManager.Core.DataBase.Repository.Interfaces
     {
         public bool UseLocalView { get; set; }
 
-        public Task<T> Add(T item, CancellationToken cancellationToken = default);
+        public Task<T> AddAsync(T item, CancellationToken cancellationToken = default);
 
-        public Task<IReadOnlyList<T>> Add(IEnumerable<T> items, CancellationToken cancellationToken = default);
+        public Task<IReadOnlyList<T>> AddAsync(IEnumerable<T> items, CancellationToken cancellationToken = default);
 
-        public Task<T?> Delete(T item, CancellationToken cancellationToken = default);
+        public Task<T?> DeleteAsync(T item, CancellationToken cancellationToken = default);
 
-        public Task<T?> DeleteById(long id, CancellationToken cancellationToken = default);
+        public Task<T?> DeleteByIdAsync(long id, CancellationToken cancellationToken = default);
 
-        public Task<bool> Exist(T item, CancellationToken cancellationToken = default);
+        public Task<bool> ExistAsync(T item, CancellationToken cancellationToken = default);
 
-        public Task<bool> ExistId(long id, CancellationToken cancellationToken = default);
+        public Task<bool> ExistIdAsync(long id, CancellationToken cancellationToken = default);
 
-        public Task<IReadOnlyList<T>> Get(int count, int skip = 0, CancellationToken cancellationToken = default);
+        public Task<IReadOnlyList<T>> GetAsync(int count, int skip = 0, CancellationToken cancellationToken = default);
 
-        public Task<IReadOnlyList<T>> GetAll(CancellationToken cancellationToken = default);
+        public Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        public Task<T> GetById(long id, CancellationToken cancellationToken = default);
+        public Task<T> GetByIdAsync(long id, CancellationToken cancellationToken = default);
 
-        public Task<T> GetByUuid(Guid uuid, CancellationToken cancellationToken = default);
+        public Task<T> GetByUuidAsync(Guid uuid, CancellationToken cancellationToken = default);
 
-        public Task<int> GetCount(CancellationToken cancellationToken = default);
+        public Task<int> GetCountAsync(CancellationToken cancellationToken = default);
 
-        public Task<IEfPage<T>> GetPage(int pageIndex, int pageSize, CancellationToken cancellationToken  = default);
+        public Task<IEfPage<T>> GetPageAsync(int pageIndex, int pageSize, CancellationToken cancellationToken  = default);
         
-        public Task<T> Update(T item, CancellationToken cancellationToken  = default);
+        public Task<T> UpdateAsync(T item, CancellationToken cancellationToken  = default);
     }
 }
