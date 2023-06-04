@@ -10,6 +10,7 @@ namespace MoneyManager.Core.DataBase.Configurations
     {
         public void Configure(EntityTypeBuilder<EfBaseCategory> builder)
         {
+            builder.HasIndex(x => x.Name).IsUnique();
             builder.HasIndex(x => x.Uuid);
             builder.HasData(new EfBaseCategory[]
             {
@@ -48,7 +49,7 @@ namespace MoneyManager.Core.DataBase.Configurations
                     CreateDate = DateTime.Now,
                     Name = MetaLabelType.OTHER.GetDescription()
                 },
-            });
+            }); 
         }
     }
 }

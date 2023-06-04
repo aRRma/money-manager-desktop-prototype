@@ -6,9 +6,9 @@ namespace MoneyManager.Core.DataBase.Repository
 {
     public sealed class EfEntityImageRepository : EfNamedRepository<EfEntityImage>
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<EfEntityImageRepository> _logger;
 
-        public EfEntityImageRepository(AppDbContext appDbContext, ILogger logger) 
+        public EfEntityImageRepository(AppDbContext appDbContext, ILogger<EfEntityImageRepository> logger) 
             : base(appDbContext)
         {
             _logger = logger;

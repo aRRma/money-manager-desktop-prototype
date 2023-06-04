@@ -6,9 +6,9 @@ namespace MoneyManager.Core.DataBase.Repository
 {
     public sealed class EfMoneyOperationRepository : EfNamedRepository<EfMoneyOperation>
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<EfMoneyOperationRepository> _logger;
 
-        public EfMoneyOperationRepository(AppDbContext appDbContext, ILogger logger) 
+        public EfMoneyOperationRepository(AppDbContext appDbContext, ILogger<EfMoneyOperationRepository> logger) 
             : base(appDbContext)
         {
             _logger = logger;

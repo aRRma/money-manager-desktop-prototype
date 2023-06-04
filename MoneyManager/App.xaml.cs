@@ -2,11 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MoneyManager.Contracts.Services;
 using MoneyManager.Contracts.Views;
 using MoneyManager.Core.Contracts.Services;
 using MoneyManager.Core.DataBase;
-using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Repository;
 using MoneyManager.Core.Services;
 using MoneyManager.Models;
@@ -69,6 +69,14 @@ public partial class App : Application
         services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
         services.Configure<AppDbConfig>(context.Configuration.GetSection(nameof(AppDbConfig)));
 
+        // Logger
+        services.AddLogging(_ =>
+        {
+            _.ClearProviders();
+            _.AddDebug();
+            _.AddConsole();
+        });
+
         // App Host
         services.AddHostedService<ApplicationHostService>();
 
@@ -79,7 +87,7 @@ public partial class App : Application
         services.AddDbContextFactory<AppDbContext>(_ => _
             .UseSqlite($"Data Source = {_configuration["AppDbConfig:DbName"]}")
             .LogTo(Console.WriteLine));
-        services.AddTransient<EfStorageRepository>();
+        services.AddTransient<EfMoneyStorageRepository>();
 
         // Services
         services.AddSingleton<IApplicationInfoService, ApplicationInfoService>();

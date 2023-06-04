@@ -6,9 +6,9 @@ namespace MoneyManager.Core.DataBase.Repository
 {
     public sealed class EfMetaLabelRepository : EfNamedRepository<EfMetaLabel>
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<EfMetaLabelRepository> _logger;
 
-        public EfMetaLabelRepository(AppDbContext appDbContext, ILogger logger) 
+        public EfMetaLabelRepository(AppDbContext appDbContext, ILogger<EfMetaLabelRepository> logger) 
             : base(appDbContext)
         {
             _logger = logger;

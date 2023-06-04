@@ -9,7 +9,7 @@ namespace MoneyManager.ViewModels;
 
 public partial class MoneyStorageViewModel : ObservableObject
 {
-    private readonly EfStorageRepository _storageRepository;
+    private readonly EfMoneyStorageRepository _storageRepository;
 
     public MoneyStorageViewModel()
     {
@@ -19,7 +19,7 @@ public partial class MoneyStorageViewModel : ObservableObject
         //#endif
     }
 
-    public MoneyStorageViewModel(EfStorageRepository storageRepository)
+    public MoneyStorageViewModel(EfMoneyStorageRepository storageRepository)
     {
         _storageRepository = storageRepository;
 
