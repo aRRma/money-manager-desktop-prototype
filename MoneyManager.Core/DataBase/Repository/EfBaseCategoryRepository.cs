@@ -59,11 +59,23 @@ namespace MoneyManager.Core.DataBase.Repository
             }
         }
 
-        public async Task<bool> BaseCategoryRemoveAsync(EfBaseCategory item, CancellationToken cancellationToken = default)
-        {
-            // TODO тут скорее должно быть тупо удаление если это возможно
-            // вся логика переноса sub категорий и записей кудато, должна быть в бизнес процессоре
-            throw new NotImplementedException();
-        }
+        //public async Task<bool> BaseCategoryRemoveAsync(EfBaseCategory item, CancellationToken cancellationToken = default)
+        //{
+        //    // TODO тут скорее должно быть тупо удаление если это возможно
+        //    // вся логика переноса sub категорий и записей кудато, должна быть в бизнес процессоре
+        //    try
+        //    {
+        //        await base.DeleteAsync
+        //    }
+        //    catch (DbUpdateException ex)
+        //    {
+        //        throw;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
     }
 }

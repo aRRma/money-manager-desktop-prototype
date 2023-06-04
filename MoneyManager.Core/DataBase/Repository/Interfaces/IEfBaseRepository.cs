@@ -16,7 +16,7 @@ namespace MoneyManager.Core.DataBase.Repository.Interfaces
 
         public Task<bool> ExistAsync(T item, CancellationToken cancellationToken = default);
 
-        public Task<bool> ExistIdAsync(long id, CancellationToken cancellationToken = default);
+        public Task<bool> ExistByIdAsync(long id, CancellationToken cancellationToken = default);
 
         public Task<IReadOnlyList<T>> GetAsync(int count, int skip = 0, CancellationToken cancellationToken = default);
 

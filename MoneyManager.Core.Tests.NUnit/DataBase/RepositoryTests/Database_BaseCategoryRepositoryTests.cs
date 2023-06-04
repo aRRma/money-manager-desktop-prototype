@@ -19,7 +19,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
     [AllureSubSuite(AllureConstants.SuiteDatabaseRepository)]
     [AllureTag(AllureConstants.VersionOne, AllureConstants.SuiteDatabase, AllureConstants.SuiteDatabaseRepository)]
     [AllureSeverity(SeverityLevel.critical)]
-    internal class Database_CategoryRepositoryTests
+    internal class Database_BaseCategoryRepositoryTests
     {
         [Test]
         [AllureDescription("Проверка успешного создания базовой категории через репозиторий")]
@@ -105,6 +105,37 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
 
                 Console.WriteLine(ex.Message);
             }, "Попытка повторного добавления в репозиторий дублирующей базовой категории");
+        }
+
+        [Test]
+        [AllureDescription("Проверка успешного удаление сущности через репозиторий")]
+        public async Task CategoryRepository_DeleteByEntityBaseCategory_WhenDone()
+        {
+            using var context = DbContextTestHelpers.CreateAppDbContext();
+            var repository = new EfBaseCategoryRepository(context, null, null);
+            var entity = EfBaseCategory.GetDefaultEntity();
+
+            await AllureLifecycle.Instance.WrapInStepAsync(async () =>
+            {
+                Assert.AreEqual(0, entity.Id);
+
+                var result = await repository.BaseCategoryAddAsync(entity).ConfigureAwait(false);
+
+                Assert.IsTrue(result.Id != 0);
+                Assert.IsTrue(entity.Id != 0);
+            }, "Добавление в репозиторий новой базовой категории");
+
+            await AllureLifecycle.Instance.WrapInStepAsync(async () =>
+            {
+                entity = await repository.DeleteAsync(entity).ConfigureAwait(false);
+            }, "Попытка удаления ранее добавленной базовой категории");
+
+            await AllureLifecycle.Instance.WrapInStepAsync(async () =>
+            {
+                var result = await repository.ExistByIdAsync(entity.Id).ConfigureAwait(false);
+
+                Assert.IsFalse(result);
+            }, "Проверка что категория удалилиась");
         }
     }
 }

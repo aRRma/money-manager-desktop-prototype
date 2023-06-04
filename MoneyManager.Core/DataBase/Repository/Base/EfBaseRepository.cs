@@ -48,10 +48,10 @@ namespace MoneyManager.Core.DataBase.Repository.Base
         {
             Guard.IsNotNull(item);
 
-            if (!await ExistIdAsync(item.Id, cancellationToken).ConfigureAwait(false))
+            if (!await ExistByIdAsync(item.Id, cancellationToken).ConfigureAwait(false))
                 return null;
 
-            _dbContext.Remove(item);
+            var some = _dbContext.Remove(item);
             await SaveChanges(cancellationToken).ConfigureAwait(false);
 
             return item;
@@ -80,7 +80,7 @@ namespace MoneyManager.Core.DataBase.Repository.Base
             return await Items.AnyAsync(x => x.Id == item.Id).ConfigureAwait(false);
         }
 
-        public async Task<bool> ExistIdAsync(long id, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             Guard.IsGreaterThan(id, 0);
 
