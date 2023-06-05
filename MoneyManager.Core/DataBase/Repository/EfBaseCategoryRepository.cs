@@ -30,7 +30,7 @@ namespace MoneyManager.Core.DataBase.Repository
         /// <returns></returns>
         /// <exception cref="DuplicateEntityException"/>
         /// <exception cref="ArgumentNullException"/>
-        public async Task<EfBaseCategory?> BaseCategoryAddAsync(EfBaseCategory item, CancellationToken cancellationToken = default)
+        public async Task<EfBaseCategory> BaseCategoryAddAsync(EfBaseCategory item, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -59,23 +59,36 @@ namespace MoneyManager.Core.DataBase.Repository
             }
         }
 
-        //public async Task<bool> BaseCategoryRemoveAsync(EfBaseCategory item, CancellationToken cancellationToken = default)
-        //{
-        //    // TODO тут скорее должно быть тупо удаление если это возможно
-        //    // вся логика переноса sub категорий и записей кудато, должна быть в бизнес процессоре
-        //    try
-        //    {
-        //        await base.DeleteAsync
-        //    }
-        //    catch (DbUpdateException ex)
-        //    {
-        //        throw;
-        //    }
-        //    catch (Exception)
-        //    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="DuplicateEntityException"/>
+        /// <exception cref="ArgumentOutOfRangeException"/>
+        public async Task<bool> BaseCategoryRemoveAsync(EfBaseCategory item, CancellationToken cancellationToken = default)
+        {
+            // TODO тут скорее должно быть тупо удаление если это возможно
+            // вся логика переноса sub категорий и записей кудато, должна быть в бизнес процессоре
+            try
+            {
+                if (!await ExistByIdAsync(item.Id, cancellationToken).ConfigureAwait(false))
+                    return false;
 
-        //        throw;
-        //    }
-        //}
+                await DeleteAsync(item, cancellationToken).ConfigureAwait(false);
+
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                    
+                throw;
+            }
+        }
     }
 }

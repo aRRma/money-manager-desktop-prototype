@@ -48,9 +48,6 @@ namespace MoneyManager.Core.DataBase.Repository.Base
         {
             Guard.IsNotNull(item);
 
-            if (!await ExistByIdAsync(item.Id, cancellationToken).ConfigureAwait(false))
-                return null;
-
             var some = _dbContext.Remove(item);
             await SaveChanges(cancellationToken).ConfigureAwait(false);
 

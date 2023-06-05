@@ -12,7 +12,7 @@ using AllureConstants = MoneyManager.Core.Tests.NUnit.Constants.AllureConstants;
 #pragma warning disable CS0618 // Тип или член устарел
 namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
 {
-    [TestFixture(Author = AllureConstants.AuthorArrma, Description = "Проверка работы репозиториев сущностей")]
+    [TestFixture(Author = AllureConstants.AuthorArrma, Description = $"Проверка работы репозитория {nameof(EfBaseCategoryRepository)}")]
     [AllureNUnit]
     [AllureSuite(AllureConstants.SuiteDatabase)]
     [AllureParentSuite(AllureConstants.VersionOne)]
@@ -109,7 +109,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
 
         [Test]
         [AllureDescription("Проверка успешного удаление сущности через репозиторий")]
-        public async Task CategoryRepository_DeleteByEntityBaseCategory_WhenDone()
+        public async Task CategoryRepository_DeleteExistEntityBaseCategory_WhenDone()
         {
             using var context = DbContextTestHelpers.CreateAppDbContext();
             var repository = new EfBaseCategoryRepository(context, null, null);
@@ -127,7 +127,9 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
             {
-                entity = await repository.DeleteAsync(entity).ConfigureAwait(false);
+                var result = await repository.BaseCategoryRemoveAsync(entity).ConfigureAwait(false);
+
+                Assert.IsTrue(result);
             }, "Попытка удаления ранее добавленной базовой категории");
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
@@ -135,7 +137,24 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
                 var result = await repository.ExistByIdAsync(entity.Id).ConfigureAwait(false);
 
                 Assert.IsFalse(result);
-            }, "Проверка что категория удалилиась");
+            }, "Проверка что категория удалилась");
+        }
+
+        [Test]
+        [AllureDescription("Проверка удаление не существующей сущности через репозиторий")]
+        public async Task CategoryRepository_DeleteNotExistEntityBaseCategory_WhenFalse()
+        {
+            using var context = DbContextTestHelpers.CreateAppDbContext();
+            var repository = new EfBaseCategoryRepository(context, null, null);
+            var entity = EfBaseCategory.GetDefaultEntity();
+            entity.Id = 1000;
+
+            await AllureLifecycle.Instance.WrapInStepAsync(async () =>
+            {
+                var result = await repository.BaseCategoryRemoveAsync(entity).ConfigureAwait(false);
+
+                Assert.IsFalse(result);
+            }, "Попытка удаления ранее добавленной базовой категории");
         }
     }
 }
