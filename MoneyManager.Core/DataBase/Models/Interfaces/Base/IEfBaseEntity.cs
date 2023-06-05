@@ -10,7 +10,5 @@
         public Guid Uuid { get; set; }
 
         public DateTime CreateDate { get; set; }
-
-        public DateTime? DeleteDate { get; set; }
     }
 }

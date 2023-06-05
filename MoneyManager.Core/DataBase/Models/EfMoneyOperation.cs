@@ -31,9 +31,6 @@ namespace MoneyManager.Core.DataBase.Models
         [Column("create_date")]
         public DateTime CreateDate { get; set; }
 
-        [Column("delete_date")]
-        public DateTime? DeleteDate { get; set; }
-
         public static EfMoneyOperation GetDefaultEntity()
         {
             return new()
