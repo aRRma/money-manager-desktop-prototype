@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using MoneyManager.Core.Constants;
 using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Repository.Base;
 using System.Globalization;
@@ -8,11 +10,16 @@ namespace MoneyManager.Core.DataBase.Repository
     public sealed class EfMoneyStorageRepository : EfNamedRepository<EfMoneyStorage>
     {
         private readonly ILogger<EfMoneyStorageRepository> _logger;
+        private readonly IAppDbExceptionConstantProvider _exceptionConstantProvider;
 
-        public EfMoneyStorageRepository(AppDbContext dbContext, ILogger<EfMoneyStorageRepository> logger)
+        public EfMoneyStorageRepository(
+            AppDbContext dbContext, 
+            ILogger<EfMoneyStorageRepository> logger,
+            IAppDbExceptionConstantProvider exceptionConstantProvider)
             : base(dbContext)
         {
             _logger = logger;
+            _exceptionConstantProvider = exceptionConstantProvider;
 
             // TODO мож сюда какой-то валидатор надо?
             // в валидаторе должны быть правила типо макс сумма. минимальная, можно ли в минус уходить это все проверять перед операциями.
@@ -24,6 +31,7 @@ namespace MoneyManager.Core.DataBase.Repository
         /// <param name="item"></param>
         /// <param name="sum"></param>
         /// <returns></returns>
+        /// <exception cref="DbUpdateException">Если item null</exception>
         /// <exception cref="ArgumentNullException">Если item null</exception>
         public async Task<bool> MoneyAdd(EfMoneyStorage item, string sum)
         {
@@ -38,6 +46,10 @@ namespace MoneyManager.Core.DataBase.Repository
                     await UpdateAsync(item).ConfigureAwait(false);
                     return true;
                 }
+                catch (DbUpdateException ex)
+                {
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     // TODO log
@@ -47,6 +59,14 @@ namespace MoneyManager.Core.DataBase.Repository
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="sum"></param>
+        /// <returns></returns>
+        /// <exception cref="DbUpdateException">Если item null</exception>
+        /// <exception cref="ArgumentNullException">Если item null</exception>
         public async Task<bool> MoneyRemove(EfMoneyStorage item, string sum)
         {
             sum = sum.Replace('.', ',');
@@ -59,6 +79,10 @@ namespace MoneyManager.Core.DataBase.Repository
                 {
                     await UpdateAsync(item).ConfigureAwait(false);
                     return true;
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {

@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MoneyManager.Core.Constants;
 using MoneyManager.Core.DataBase.Exceptions;
 using MoneyManager.Core.DataBase.Models;
+using MoneyManager.Core.DataBase.Models.Interfaces.Base;
 using MoneyManager.Core.DataBase.Repository.Base;
 
 namespace MoneyManager.Core.DataBase.Repository
@@ -11,15 +13,18 @@ namespace MoneyManager.Core.DataBase.Repository
     {
         private readonly ILogger<EfBaseCategoryRepository> _logger;
         private readonly IAppDbExceptionConstantProvider _exceptionConstantProvider;
+        private readonly IValidator<IEfNamedEntity> _validator;
 
         public EfBaseCategoryRepository(
             AppDbContext appDbContext,
             ILogger<EfBaseCategoryRepository> logger,
-            IAppDbExceptionConstantProvider exceptionConstantProvider)
+            IAppDbExceptionConstantProvider exceptionConstantProvider,
+            IValidator<IEfNamedEntity> validator)
             : base(appDbContext)
         {
             _logger = logger;
             _exceptionConstantProvider = exceptionConstantProvider;
+            _validator = validator;
         }
 
         /// <summary>
@@ -28,22 +33,27 @@ namespace MoneyManager.Core.DataBase.Repository
         /// <param name="item"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        /// <exception cref="ValidationException"/>
+        /// <exception cref="DbUpdateException"/>
         /// <exception cref="DuplicateEntityException"/>
         /// <exception cref="ArgumentNullException"/>
         public async Task<EfBaseCategory> BaseCategoryAddAsync(EfBaseCategory item, CancellationToken cancellationToken = default)
         {
             try
             {
+                _validator.ValidateAndThrow(item);
+
                 if (await ExistByNameAsync(item.Name, cancellationToken).ConfigureAwait(false))
-                {
-                    // TODO log
                     throw new DuplicateEntityException(_exceptionConstantProvider.GetDuplicateEntityByNameExceptionMessage(item));
-                }
 
                 await AddAsync(item, cancellationToken).ConfigureAwait(false);
 
-                if (item.Id == default) return null;
                 return item;
+            }
+            catch(ValidationException ex)
+            {
+                // TODO log
+                throw;
             }
             catch (DbUpdateException ex)
             {
