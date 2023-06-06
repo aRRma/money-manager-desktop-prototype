@@ -5,7 +5,7 @@ namespace MoneyManager.Core.DataBase.Models.Interfaces
 {
     public interface IEfRecord : IEfNamedEntity
     {
-        public double Sum { get; set; }
+        public decimal Sum { get; set; }
 
         public MoneyOperationType OperationType { get; set; }
     }

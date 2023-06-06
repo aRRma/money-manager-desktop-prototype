@@ -8,7 +8,8 @@ using MoneyManager.Core.DataBase.Models.Interfaces.Base;
 
 namespace MoneyManager.Core.DataBase.Validators
 {
-    public class EfNamedEntityValidator : AbstractValidator<IEfNamedEntity>
+    public class EfNamedEntityValidator<T> : AbstractValidator<T>
+        where T : IEfNamedEntity
     {
         public EfNamedEntityValidator()
         {

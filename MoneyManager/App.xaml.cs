@@ -1,13 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MoneyManager.Contracts.Services;
 using MoneyManager.Contracts.Views;
+using MoneyManager.Core.Constants;
 using MoneyManager.Core.Contracts.Services;
 using MoneyManager.Core.DataBase;
+using MoneyManager.Core.DataBase.Models;
+using MoneyManager.Core.DataBase.Models.Interfaces;
+using MoneyManager.Core.DataBase.Models.Interfaces.Base;
 using MoneyManager.Core.DataBase.Repository;
+using MoneyManager.Core.DataBase.Validators;
+using MoneyManager.Core.RegistrationServices;
 using MoneyManager.Core.Services;
 using MoneyManager.Models;
 using MoneyManager.Services;
@@ -82,12 +89,11 @@ public partial class App : Application
 
         // Core Services
         services.AddSingleton<IFileService, FileService>();
-
-        // Data
         services.AddDbContextFactory<AppDbContext>(_ => _
             .UseSqlite($"Data Source = {_configuration["AppDbConfig:DbName"]}")
             .LogTo(Console.WriteLine));
-        services.AddTransient<EfMoneyStorageRepository>();
+        services.AddRepositories();
+        services.AddValidators();
 
         // Services
         services.AddSingleton<IApplicationInfoService, ApplicationInfoService>();
@@ -106,6 +112,9 @@ public partial class App : Application
 
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<SettingsPage>();
+
+        // Const provider
+        services.AddSingleton<IAppDbExceptionConstantProvider, AppDbExceptionConstantProvider>();
     }
 
     private async void OnExit(object sender, ExitEventArgs e)

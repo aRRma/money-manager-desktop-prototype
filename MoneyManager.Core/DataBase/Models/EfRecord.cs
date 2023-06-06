@@ -22,7 +22,7 @@ namespace MoneyManager.Core.DataBase.Models
 
         [Required]
         [Column("sum")]
-        public double Sum { get; set; }
+        public decimal Sum { get; set; }
 
         [Required]
         [Column("operation_type")]

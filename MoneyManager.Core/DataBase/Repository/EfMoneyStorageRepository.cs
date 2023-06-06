@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MoneyManager.Core.Constants;
 using MoneyManager.Core.DataBase.Models;
+using MoneyManager.Core.DataBase.Models.Interfaces.Base;
 using MoneyManager.Core.DataBase.Repository.Base;
 using System.Globalization;
 
@@ -11,6 +13,7 @@ namespace MoneyManager.Core.DataBase.Repository
     {
         private readonly ILogger<EfMoneyStorageRepository> _logger;
         private readonly IAppDbExceptionConstantProvider _exceptionConstantProvider;
+        private readonly IValidator<IEfNamedEntity> _validator;
 
         public EfMoneyStorageRepository(
             AppDbContext dbContext, 
