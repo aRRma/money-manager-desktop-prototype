@@ -1,6 +1,7 @@
 ﻿using Allure.Net.Commons;
 using MoneyManager.Core.Tests.NUnit.Helpers;
 using NUnit.Framework;
+using System.Diagnostics;
 
 namespace MoneyManager.Core.Tests.NUnit
 {
@@ -27,15 +28,15 @@ namespace MoneyManager.Core.Tests.NUnit
         public void TearDown()
         {
             // должен быть установлен allure и добавлен путь до него в окружение
-            //var cmd = new Process();
-            //cmd.StartInfo.FileName = CMD_PATH;
-            //cmd.StartInfo.RedirectStandardInput = true;
-            //cmd.StartInfo.UseShellExecute = false;
-            //cmd.Start();
+            var cmd = new Process();
+            cmd.StartInfo.FileName = CMD_PATH;
+            cmd.StartInfo.RedirectStandardInput = true;
+            cmd.StartInfo.UseShellExecute = false;
+            cmd.Start();
 
-            //cmd.StandardInput.WriteLine($"allure serve {ALLURE_RESULT_PATH}");
-            //cmd.StandardInput.Flush();
-            //cmd.StandardInput.Close();
+            cmd.StandardInput.WriteLine($"allure serve {ALLURE_RESULT_PATH}");
+            cmd.StandardInput.Flush();
+            cmd.StandardInput.Close();
         }
     }
 }

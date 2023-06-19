@@ -26,7 +26,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
         public async Task CategoryRepository_AddBaseCategory_WhenDone()
         {
             using var context = DbContextTestHelpers.CreateAppDbContext();
-            var repository = new EfBaseCategoryRepository(context, null, null);
+            var repository = new EfBaseCategoryRepository(context, null, null, null);
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
             {
@@ -47,7 +47,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
         {
             using var context = DbContextTestHelpers.CreateAppDbContext();
             var constProvider = new AppDbExceptionConstantProvider();
-            var repository = new EfBaseCategoryRepository(context, null, constProvider);
+            var repository = new EfBaseCategoryRepository(context, null, constProvider, null);
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
             {
@@ -81,7 +81,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
         {
             using var context = DbContextTestHelpers.CreateAppDbContext();
             var constProvider = new AppDbExceptionConstantProvider();
-            var repository = new EfBaseCategoryRepository(context, null, constProvider);
+            var repository = new EfBaseCategoryRepository(context, null, constProvider, null);
             var entity = EfBaseCategory.GetDefaultEntity();
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
@@ -112,7 +112,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
         public async Task CategoryRepository_DeleteExistEntityBaseCategory_WhenDone()
         {
             using var context = DbContextTestHelpers.CreateAppDbContext();
-            var repository = new EfBaseCategoryRepository(context, null, null);
+            var repository = new EfBaseCategoryRepository(context, null, null, null);
             var entity = EfBaseCategory.GetDefaultEntity();
 
             await AllureLifecycle.Instance.WrapInStepAsync(async () =>
@@ -145,7 +145,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase.RepositoryTests
         public async Task CategoryRepository_DeleteNotExistEntityBaseCategory_WhenFalse()
         {
             using var context = DbContextTestHelpers.CreateAppDbContext();
-            var repository = new EfBaseCategoryRepository(context, null, null);
+            var repository = new EfBaseCategoryRepository(context, null, null, null);
             var entity = EfBaseCategory.GetDefaultEntity();
             entity.Id = 1000;
 
