@@ -64,6 +64,7 @@ namespace MoneyManager.Core.Tests.NUnit.DataBase
         [AllureDescription("Проверка выборки из ранее созданной базы")]
         public void DbContext_CreateAndSelectData_WhenDone()
         {
+            // TODO переделать на коннект к базе
             using var context = DbContextTestHelpers.CreateAppDbContext();
 
             AllureLifecycle.Instance.WrapInStep(() =>

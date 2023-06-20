@@ -13,8 +13,4 @@
     <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.5" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
 </Project>

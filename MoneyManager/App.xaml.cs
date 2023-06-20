@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,13 +8,10 @@ using MoneyManager.Contracts.Views;
 using MoneyManager.Core.Constants;
 using MoneyManager.Core.Contracts.Services;
 using MoneyManager.Core.DataBase;
-using MoneyManager.Core.DataBase.Models;
-using MoneyManager.Core.DataBase.Models.Interfaces;
-using MoneyManager.Core.DataBase.Models.Interfaces.Base;
-using MoneyManager.Core.DataBase.Repository;
-using MoneyManager.Core.DataBase.Validators;
+using MoneyManager.Core.Models;
 using MoneyManager.Core.RegistrationServices;
 using MoneyManager.Core.Services;
+using MoneyManager.Core.Utils;
 using MoneyManager.Models;
 using MoneyManager.Services;
 using MoneyManager.ViewModels;
@@ -39,7 +35,7 @@ public partial class App : Application
     private IHost _host;
     private IConfiguration _configuration;
 
-    public T GetService<T>()
+    public T? GetService<T>()
         where T : class
         => _host.Services.GetService(typeof(T)) as T;
 
@@ -75,6 +71,7 @@ public partial class App : Application
         _configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
         services.Configure<AppDbConfig>(context.Configuration.GetSection(nameof(AppDbConfig)));
+        services.Configure<AutoRegisterServiceOptions>(context.Configuration.GetSection(nameof(AutoRegisterServiceOptions)));
 
         // Logger
         services.AddLogging(_ =>
@@ -115,6 +112,8 @@ public partial class App : Application
 
         // Const provider
         services.AddSingleton<IAppDbExceptionConstantProvider, AppDbExceptionConstantProvider>();
+
+        ReflectionUtils.GetAllAssembliesByType(typeof(IAutoRegisterService));
     }
 
     private async void OnExit(object sender, ExitEventArgs e)
