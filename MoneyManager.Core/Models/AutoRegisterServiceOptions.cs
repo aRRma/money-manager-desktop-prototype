@@ -3,19 +3,23 @@
 namespace MoneyManager.Core.Models
 {
     /// <summary>
-    /// Узел конфигураций авто регистрируемого сервиса
+    /// Узел списка конфигураций авто регистрируемых сервисов
     /// </summary>
-    public class AutoRegisterServiceOptions
+    public class AutoRegisterServicesOptions
     {
-        public List<ServiceAssemblyOption>? Assemblies { get; }
+        public List<AutoRegisterServiceInfo>? ServicesInfo { get; init; }
     }
 
     /// <summary>
     /// Модель описания конкретного авто регистрируемого сервиса
     /// </summary>
-    public class ServiceAssemblyOption
+    public class AutoRegisterServiceInfo
     {
+        public string? AssemblyName { get; init; }
+
         [Required]
-        public string AssemblyName { get; }
+        public string FullQualifiedServiceName { get; init; }
+
+        // TODO возможно спец. параметры
     }
 }

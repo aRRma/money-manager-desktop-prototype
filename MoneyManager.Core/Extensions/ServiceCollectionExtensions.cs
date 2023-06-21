@@ -6,7 +6,7 @@ namespace MoneyManager.Core.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void RegisterAutoService(this IServiceCollection services, IOptions<AutoRegisterServiceOptions> options)
+        public static void RegisterAutoService(this IServiceCollection services, IOptions<AutoRegisterServicesOptions> options)
         {
 
         }

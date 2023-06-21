@@ -4,16 +4,40 @@ namespace MoneyManager.Core.Utils
 {
     public static class ReflectionUtils
     {
-        public static List<Assembly> GetAllAssembliesByType(Type type)
-       {
-            var types1 = Assembly.GetExecutingAssembly().GetTypes();
-            var types2 = Assembly.GetCallingAssembly().GetTypes();
+        private static List<Type>? _allAssemblies;
+        public static List<Type> AllAssemblies
+        {
+            get
+            {
+                // считаем, что однократно подгрузим все сборки и норм
+                if (_allAssemblies is not null)
+                    return _allAssemblies;
 
-            var allTypes = types1.Union(types2);
+                _allAssemblies = GetAllCurrentAssemblyTypes();
+                return AllAssemblies;
+            }
+        }
 
-            var service = allTypes.Where(x => type.IsAssignableFrom(x)).ToList();
+        private static List<Type> GetAllCurrentAssemblyTypes()
+        {
+            var executingAssemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
+            var callingAssemblyTypes = Assembly.GetCallingAssembly().GetTypes();
 
-            return null;
+            return executingAssemblyTypes
+                .Union(callingAssemblyTypes)
+                .ToList();
+        }
+
+        public static List<Type> GetAssembliesByType(Type type)
+        {
+            return AllAssemblies
+                .Where(x => type.IsAssignableFrom(x))
+                .ToList();
+        }
+
+        public static Type? GetTypeByName(List<Type> types, string typeName)
+        {
+            return types.SingleOrDefault(x => string.Equals(x.Name, typeName, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

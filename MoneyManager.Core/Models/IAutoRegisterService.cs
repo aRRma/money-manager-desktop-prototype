@@ -13,6 +13,6 @@ namespace MoneyManager.Core.Models
         /// </summary>
         /// <param name="services"></param>
         /// <param name="option"></param>
-        public void AutoRegister(IServiceCollection services, IOptions<ServiceAssemblyOption> option);
+        public void AutoRegister(IServiceCollection services, IOptions<AutoRegisterServiceInfo> option);
     }
 }

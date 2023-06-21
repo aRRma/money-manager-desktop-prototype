@@ -5,7 +5,7 @@ namespace MoneyManager.Core.Models
 {
     public class SomeTestAutoRegisterServiceTwo : IAutoRegisterService
     {
-        public void AutoRegister(IServiceCollection services, IOptions<ServiceAssemblyOption> option)
+        public void AutoRegister(IServiceCollection services, IOptions<AutoRegisterServiceInfo> option)
         {
             throw new NotImplementedException();
         }

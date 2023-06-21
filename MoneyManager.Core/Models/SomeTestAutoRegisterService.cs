@@ -6,7 +6,7 @@ namespace MoneyManager.Core.Models
 {
     public class SomeTestAutoRegisterService : IAutoRegisterService
     {
-        public void AutoRegister(IServiceCollection services, IOptions<ServiceAssemblyOption> option)
+        public void AutoRegister(IServiceCollection services, IOptions<AutoRegisterServiceInfo> option)
         {
             Type type = this.GetType();
 
