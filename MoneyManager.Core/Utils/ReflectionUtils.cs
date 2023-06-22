@@ -25,11 +25,6 @@ namespace MoneyManager.Core.Utils
                 .ToList();
         }
 
-        public static Type? GetTypeByName(List<Type> types, string typeName)
-        {
-            return types.SingleOrDefault(x => string.Equals(x.Name, typeName, StringComparison.CurrentCultureIgnoreCase));
-        }
-
         private static List<Type> GetAllCurrentAssemblyTypes()
         {
             var executingAssemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
@@ -38,6 +33,12 @@ namespace MoneyManager.Core.Utils
             return executingAssemblyTypes
                 .Union(callingAssemblyTypes)
                 .ToList();
+        }
+
+        public static Type? GetTypeByName(List<Type> types, string typeName)
+        {
+            return types
+                .SingleOrDefault(x => string.Equals(x.Name, typeName, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

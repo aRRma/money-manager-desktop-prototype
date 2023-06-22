@@ -1,5 +1,4 @@
 ﻿using MoneyManager.Core.DataBase.Models.Interfaces.Base;
-using System.Data;
 using System.Runtime.CompilerServices;
 
 namespace MoneyManager.Core.Constants
