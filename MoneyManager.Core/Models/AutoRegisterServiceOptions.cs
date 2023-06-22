@@ -15,11 +15,11 @@ namespace MoneyManager.Core.Models
     /// </summary>
     public class AutoRegisterServiceInfo
     {
-        public string? AssemblyName { get; init; }
-
         [Required]
         public string FullQualifiedServiceName { get; init; }
 
-        // TODO возможно спец. параметры
+        public string? AssemblyName { get; init; }
+
+        public string? ConfigPath { get; init; }
     }
 }
