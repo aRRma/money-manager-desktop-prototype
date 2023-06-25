@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MoneyManager.Core.RegistrationServices.AutoRegister.Config;
 using MoneyManager.Core.RegistrationServices.AutoRegister.Interfaces;
-using MoneyManager.Core.RegistrationServices.AutoRegister.Options;
 using MoneyManager.Core.Utils;
 using System.Reflection;
 

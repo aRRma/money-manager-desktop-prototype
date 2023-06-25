@@ -4,22 +4,22 @@ using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Models.Enums;
 using MoneyManager.Core.Extensions;
 
-namespace MoneyManager.Core.DataBase.Configurations
+namespace MoneyManager.Core.DataBase.EntityConfigurations
 {
-    internal class EfMetaLabelsConfiguration : IEntityTypeConfiguration<EfMetaLabel>
+    internal class EfMoneySourcesConfiguration : IEntityTypeConfiguration<EfMoneySource>
     {
-        public void Configure(EntityTypeBuilder<EfMetaLabel> builder)
+        public void Configure(EntityTypeBuilder<EfMoneySource> builder)
         {
             builder.HasIndex(x => x.Uuid);
             builder.HasData(
-                Enumerable.Range(1, MetaLabelType.NONE.GetLength())
-                .Select(x => new EfMetaLabel()
+                Enumerable.Range(1, MoneySourceType.NONE.GetLength())
+                .Select(x => new EfMoneySource()
                 {
                     Id = x,
                     Uuid = Guid.NewGuid(),
                     CreateDate = DateTime.Now,
-                    RecordLabel = (MetaLabelType)x,
-                    Name = ((MetaLabelType)x).GetDescription()
+                    SourceType = (MoneySourceType)x,
+                    Name = ((MoneySourceType)x).GetDescription()
                 }));
         }
     }

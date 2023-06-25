@@ -4,7 +4,7 @@ using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Models.Enums;
 using MoneyManager.Core.Extensions;
 
-namespace MoneyManager.Core.DataBase.Configurations
+namespace MoneyManager.Core.DataBase.EntityConfigurations
 {
     internal class EfMoneyOperationsConfiguration : IEntityTypeConfiguration<EfMoneyOperation>
     {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MoneyManager.Core.DataBase.Models;
 
-namespace MoneyManager.Core.DataBase.Configurations
+namespace MoneyManager.Core.DataBase.EntityConfigurations
 {
     internal class EfEntityImageConfiguration : IEntityTypeConfiguration<EfEntityImage>
     {

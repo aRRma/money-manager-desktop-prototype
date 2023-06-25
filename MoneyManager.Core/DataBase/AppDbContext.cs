@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MoneyManager.Core.DataBase.Configurations;
+using MoneyManager.Core.DataBase.EntityConfigurations;
 using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Models.Constants;
 using MoneyManager.Core.DataBase.Models.Enums;
@@ -68,7 +68,14 @@ namespace MoneyManager.Core.DataBase
         {
             // удаляем и создаем базу при каждом запуске приложения
             Database.EnsureDeleted();
-            Database.EnsureCreated();
+            try
+            {
+                Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
             // базовая настройка для чистой базы
             SetUpMoneyStorages();
             SetUpBaseCategories();
@@ -83,7 +90,7 @@ namespace MoneyManager.Core.DataBase
                 OperationType = MoneyOperationType.NONE,
                 Sum = 0,
                 MoneyStorage = MoneyStorages.Single(x => x.Id == 1),
-                BaseCategory = BaseCategories.Single(x => x.Id ==1)
+                BaseCategory = BaseCategories.Single(x => x.Id == 1)
             });
 
             this.EntityImages.Add(new()

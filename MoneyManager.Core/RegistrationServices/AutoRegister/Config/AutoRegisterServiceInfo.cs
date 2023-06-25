@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MoneyManager.Core.RegistrationServices.AutoRegister.Options
+namespace MoneyManager.Core.RegistrationServices.AutoRegister.Config
 {
     /// <summary>
     /// Модель описания конкретного авто регистрируемого сервиса

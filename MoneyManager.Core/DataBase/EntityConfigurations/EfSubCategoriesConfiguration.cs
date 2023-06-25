@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Models.Constants;
 
-namespace MoneyManager.Core.DataBase.Configurations
+namespace MoneyManager.Core.DataBase.EntityConfigurations
 {
     internal class EfSubCategoriesConfiguration : IEntityTypeConfiguration<EfSubCategory>
     {

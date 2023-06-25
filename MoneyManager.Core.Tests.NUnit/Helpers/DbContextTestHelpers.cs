@@ -12,7 +12,11 @@ namespace MoneyManager.Core.Tests.NUnit.Helpers
         public static DbContextOptions<AppDbContext> GetDataBaseOptions(out string dbName, [CallerMemberName] string name = default)
         {
             dbName = $"{name}.{DatabaseConstants.DEFAULT_TESTDB_EXTENSION}";
-            var optBuilder = new DbContextOptionsBuilder<AppDbContext>().UseSqlite($"Data Source = {dbName}");
+            var optBuilder = new DbContextOptionsBuilder<AppDbContext>()
+                .UseSqlite($"Data Source = {dbName}");
+            // TODO надо бы конфигурировать
+            //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            //.UseNpgsql($"Host=localhost;Port=5432;Database={dbName};Username=arrma;Password=aRRma151!");
             return optBuilder.Options;
         }
 

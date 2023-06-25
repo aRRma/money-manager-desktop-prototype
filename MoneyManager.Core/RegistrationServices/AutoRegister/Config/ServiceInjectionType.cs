@@ -1,4 +1,4 @@
-﻿namespace MoneyManager.Core.RegistrationServices.AutoRegister.Options
+﻿namespace MoneyManager.Core.RegistrationServices.AutoRegister.Config
 {
     /// <summary>
     /// Тип инжекции сервиса в DI

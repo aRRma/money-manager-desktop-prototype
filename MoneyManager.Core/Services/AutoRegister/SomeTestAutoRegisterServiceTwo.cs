@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MoneyManager.Core.RegistrationServices.AutoRegister;
-using MoneyManager.Core.RegistrationServices.AutoRegister.Options;
+using MoneyManager.Core.RegistrationServices.AutoRegister.Config;
 
 namespace MoneyManager.Core.Services.AutoRegister
 {
