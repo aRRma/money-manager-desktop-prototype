@@ -12,26 +12,25 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister
         /// <summary>
         /// Зарегистрировать конкретную реализацию авто рег. сервиса
         /// </summary>
-        /// <param name="services"></param>
-        public static IServiceCollection RegisterAutoServices(this IServiceCollection services)
+        /// <param name="provider">Провайдер сервисов</param>
+        public static IServiceCollection RegisterAutoServices(this IServiceCollection provider)
         {
-            AutoRegisterServicesConfig config = services
+            AutoRegisterServicesConfig config = provider
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<AutoRegisterServicesConfig>>()
                 .Value;
 
             if (!config?.ServicesInfo?.Any() ?? true)
-                return services;
-
+                return provider;
 
             foreach (var serviceInfo in config!.ServicesInfo!)
             {
                 try
                 {
                     if (!string.IsNullOrEmpty(serviceInfo.AssemblyName))
-                        services.ProcessRegistrationServiceFromAssembly(serviceInfo);
+                        provider.ProcessRegistrationServiceFromAssembly(serviceInfo);
                     else
-                        services.ProcessRegistrationService(serviceInfo);
+                        provider.ProcessRegistrationService(serviceInfo);
                 }
                 catch (Exception ex) // TODO спец эксепшен замутить
                 {
@@ -40,45 +39,101 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister
                 }
             }
 
-            return services;
+            return provider;
         }
 
-        private static void ProcessRegistrationService(this IServiceCollection services, AutoRegisterServiceInfo serviceInfo)
+        /// <summary>
+        /// Возвращает сервис наследник <see cref="IAutoRegisterService"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="provider">Провайдер сервисов</param>
+        /// <returns></returns>
+        public static T? GetAutoService<T>(this IServiceCollection provider)
+            where T : class, IAutoRegisterService, new()
+        {
+            return provider
+                .BuildServiceProvider()
+                .GetServices<IAutoRegisterService>()
+                .SingleOrDefault(x => Type.Equals(x.GetType(), typeof(T))) as T;
+        }
+
+        /// <summary>
+        /// Возвращает обязательно сервис наследник <see cref="IAutoRegisterService"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="provider">Провайдер сервисов</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static T GetRequiredAutoService<T>(this IServiceCollection provider)
+            where T : class, IAutoRegisterService, new()
+        {
+            var service = GetAutoService<T>(provider);
+
+            if (service is null)
+                throw new InvalidOperationException($"Service by type [{typeof(T).Name}] not exist");
+
+            return service;
+        }
+
+        /// <summary>
+        /// Зарегестрировать сервис в DI
+        /// </summary>
+        /// <param name="provider">Провайдер сервисов</param>
+        /// <param name="type">Тип сервиса</param>
+        /// <param name="injectionType">Тип регистрации в DI</param>
+        /// <returns></returns>
+        public static IServiceCollection AddServiceByRule(this IServiceCollection provider, Type type, ServiceInjectionType injectionType)
+        {
+            switch (injectionType)
+            {
+                case ServiceInjectionType.Singleton:
+                    provider.AddSingleton(typeof(IAutoRegisterService), type);
+                    break;
+                case ServiceInjectionType.Transient:
+                    provider.AddTransient(typeof(IAutoRegisterService), type);
+                    break;
+                case ServiceInjectionType.Scoped:
+                    provider.AddScoped(typeof(IAutoRegisterService), type);
+                    break;
+            }
+
+            return provider;
+        }
+
+        private static void ProcessRegistrationService(this IServiceCollection provider, AutoRegisterServiceInfo serviceInfo)
         {
             var assemblies = ReflectionUtils.GetAllAssembliesByType(typeof(IAutoRegisterService));
-            var type = ReflectionUtils.GetTypeByName(assemblies, serviceInfo.ImplementationName);
+            var type = ReflectionUtils.GetTypeByName(assemblies, serviceInfo.Name);
 
             if (type is null)
             {
                 // TODO падаем и логируем
-                throw new ArgumentNullException($"Not find type implement to service {serviceInfo.ImplementationName}");
+                throw new ArgumentNullException($"Not find type implement to service {serviceInfo.Name}");
             }
 
-            InvokeRegisterMethod(services, type, serviceInfo);
+            InvokeRegisterMethod(provider, type, serviceInfo);
         }
 
-        private static void ProcessRegistrationServiceFromAssembly(this IServiceCollection services, AutoRegisterServiceInfo serviceInfo)
+        private static void ProcessRegistrationServiceFromAssembly(this IServiceCollection provider, AutoRegisterServiceInfo serviceInfo)
         {
             var assembly = Assembly.Load(serviceInfo.AssemblyName!);
             var type = assembly.GetTypes()
-                    .SingleOrDefault(x => string.Equals(x.Name, serviceInfo.ImplementationName, StringComparison.CurrentCultureIgnoreCase));
+                    .SingleOrDefault(x => string.Equals(x.Name, serviceInfo.Name, StringComparison.CurrentCultureIgnoreCase));
 
             if (type is null)
             {
                 // TODO падаем и логируем
-                throw new ArgumentNullException($"Not find type implement to service {serviceInfo.ImplementationName}");
+                throw new ArgumentNullException($"Not find type implement to service {serviceInfo.Name}");
             }
 
-            InvokeRegisterMethod(services, type, serviceInfo);
+            InvokeRegisterMethod(provider, type, serviceInfo);
         }
 
-        private static void InvokeRegisterMethod(IServiceCollection services, Type type, AutoRegisterServiceInfo serviceInfo)
+        private static void InvokeRegisterMethod(IServiceCollection provider, Type type, AutoRegisterServiceInfo serviceInfo)
         {
-            object instance = type
-                            .GetConstructor(Type.EmptyTypes)!.Invoke(new object[] { });
-            var regMethod = type
-                .GetMethod(nameof(IAutoRegisterService.AutoRegister), BindingFlags.Public | BindingFlags.Instance);
-            regMethod?.Invoke(instance, new object[] { services, type, serviceInfo });
+            object instance = type.GetConstructor(Type.EmptyTypes)!.Invoke(new object[] { });
+            var regMethod = type.GetMethod(nameof(IAutoRegisterService.AutoRegister), BindingFlags.Public | BindingFlags.Instance);
+            regMethod?.Invoke(instance, new object[] { provider, type, serviceInfo });
         }
     }
 }

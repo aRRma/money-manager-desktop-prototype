@@ -17,13 +17,13 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister.Options
         /// Название реализации сервиса (класса)
         /// </summary>
         [Required]
-        public string ImplementationName { get; init; }
+        public string Name { get; init; }
 
         /// <summary>
-        /// Тип сервиса
+        /// Тип реализации сервиса
         /// </summary>
         [Required]
-        public string Type { get; init; }
+        public string ImplementType { get; init; }
 
         /// <summary>
         /// Тип инжекции сервиса в DI

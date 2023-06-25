@@ -7,17 +7,17 @@ namespace MoneyManager.Core.RegistrationServices
 {
     public static class RegisterValidators
     {
-        public static void AddValidators(this IServiceCollection service)
+        public static void AddValidators(this IServiceCollection provider)
         {
-            service.AddScoped<EfBaseCategoryValidator<IEfBaseCategory>>();
-            service.AddScoped<EfEntityImageValidator<IEfEntityImage>>();
-            service.AddScoped<EfMetaLabelValidator<IEfMetaLabel>>();
-            service.AddScoped<EfMoneyOperationValidator<IEfMoneyOperation>>();
-            service.AddScoped<EfMoneySourceValidator<IEfMoneySource>>();
-            service.AddScoped<EfMoneyStorageValidator<IEfMoneyStorage>>();
-            service.AddScoped<EfNamedEntityValidator<IEfNamedEntity>>();
-            service.AddScoped<EfRecordValidator<IEfRecord>>();
-            service.AddScoped<EfSubCategoryValidator<IEfSubCategory>>();
+            provider.AddScoped<EfBaseCategoryValidator<IEfBaseCategory>>();
+            provider.AddScoped<EfEntityImageValidator<IEfEntityImage>>();
+            provider.AddScoped<EfMetaLabelValidator<IEfMetaLabel>>();
+            provider.AddScoped<EfMoneyOperationValidator<IEfMoneyOperation>>();
+            provider.AddScoped<EfMoneySourceValidator<IEfMoneySource>>();
+            provider.AddScoped<EfMoneyStorageValidator<IEfMoneyStorage>>();
+            provider.AddScoped<EfNamedEntityValidator<IEfNamedEntity>>();
+            provider.AddScoped<EfRecordValidator<IEfRecord>>();
+            provider.AddScoped<EfSubCategoryValidator<IEfSubCategory>>();
         }
     }
 }

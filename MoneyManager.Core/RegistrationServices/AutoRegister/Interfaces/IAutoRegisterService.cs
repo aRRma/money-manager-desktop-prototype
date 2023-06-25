@@ -9,11 +9,11 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister.Interfaces
     public interface IAutoRegisterService
     {
         /// <summary>
-        /// Зарегистрировать сервис
+        /// Зарегистрировать сервис. Обязательно регистрировать как (typeof(IAutoRegisterService), type)
         /// </summary>
-        /// <param name="services"></param>
-        /// <param name="type">По типу проверять что это реально тот тип сервиса, малоли имя попутали</param>
-        /// <param name="serviceInfo"></param>
-        public void AutoRegister(IServiceCollection services, Type type, AutoRegisterServiceInfo serviceInfo);
+        /// <param name="provider">Провайдер сервисов</param>
+        /// <param name="type">Тип регистрируемого сервиса</param>
+        /// <param name="serviceInfo">Информация об регистрируемом сервисе</param>
+        public void AutoRegister(IServiceCollection provider, Type type, AutoRegisterServiceInfo serviceInfo);
     }
 }

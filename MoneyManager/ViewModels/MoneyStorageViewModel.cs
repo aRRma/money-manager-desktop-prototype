@@ -4,8 +4,6 @@ using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Repository;
 using System.Collections.ObjectModel;
 using MoneyManager.Core.Extensions;
-using FluentValidation;
-using MoneyManager.Core.DataBase.Models.Interfaces.Base;
 
 namespace MoneyManager.ViewModels;
 

@@ -5,16 +5,16 @@ namespace MoneyManager.Core.RegistrationServices
 {
     public static class RegisterRepositories
     {
-        public static void AddRepositories(this IServiceCollection service)
+        public static void AddRepositories(this IServiceCollection provider)
         {
-            service.AddTransient<EfBaseCategoryRepository>();
-            service.AddTransient<EfEntityImageRepository>();
-            service.AddTransient<EfMetaLabelRepository>();
-            service.AddTransient<EfMoneyOperationRepository>();
-            service.AddTransient<EfMoneySourceRepository>();
-            service.AddTransient<EfMoneyStorageRepository>();
-            service.AddTransient<EfRecordRepository>();
-            service.AddTransient<EfSubCategoryRepository>();
+            provider.AddTransient<EfBaseCategoryRepository>();
+            provider.AddTransient<EfEntityImageRepository>();
+            provider.AddTransient<EfMetaLabelRepository>();
+            provider.AddTransient<EfMoneyOperationRepository>();
+            provider.AddTransient<EfMoneySourceRepository>();
+            provider.AddTransient<EfMoneyStorageRepository>();
+            provider.AddTransient<EfRecordRepository>();
+            provider.AddTransient<EfSubCategoryRepository>();
         }
     }
 }

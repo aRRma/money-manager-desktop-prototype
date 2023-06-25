@@ -1,15 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MoneyManager.Core.RegistrationServices.AutoRegister.Interfaces;
+using MoneyManager.Core.RegistrationServices.AutoRegister;
 using MoneyManager.Core.RegistrationServices.AutoRegister.Options;
 using System.Diagnostics;
 
 namespace MoneyManager.Core.Services.AutoRegister
 {
-    public class SomeTestAutoRegisterService : IAutoRegisterService
+    public class SomeTestAutoRegisterService : AutoRegisterService, ISomeTestAutoRegisterService
     {
-        public void AutoRegister(IServiceCollection services, Type type, AutoRegisterServiceInfo serviceInfo)
+        public override void AutoRegister(IServiceCollection provider, Type type, AutoRegisterServiceInfo serviceInfo)
         {
-            services.AddTransient(typeof(IAutoRegisterService), type);
+            base.AutoRegister(provider, type, serviceInfo);
+
+            ;
         }
 
         public void DoWork()

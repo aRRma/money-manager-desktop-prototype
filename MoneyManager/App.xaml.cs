@@ -8,10 +8,12 @@ using MoneyManager.Contracts.Views;
 using MoneyManager.Core.Constants;
 using MoneyManager.Core.Contracts.Services;
 using MoneyManager.Core.DataBase;
-using MoneyManager.Core.Models;
 using MoneyManager.Core.RegistrationServices;
+using MoneyManager.Core.RegistrationServices.AutoRegister;
+using MoneyManager.Core.RegistrationServices.AutoRegister.Interfaces;
+using MoneyManager.Core.RegistrationServices.AutoRegister.Options;
 using MoneyManager.Core.Services;
-using MoneyManager.Core.Utils;
+using MoneyManager.Core.Services.AutoRegister;
 using MoneyManager.Models;
 using MoneyManager.Services;
 using MoneyManager.ViewModels;
@@ -69,9 +71,10 @@ public partial class App : Application
     {
         // Configuration
         _configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        // TODO прикрутить валидацию конфигов
         services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
         services.Configure<AppDbConfig>(context.Configuration.GetSection(nameof(AppDbConfig)));
-        services.Configure<AutoRegisterServiceOptions>(context.Configuration.GetSection(nameof(AutoRegisterServiceOptions)));
+        services.Configure<AutoRegisterServicesConfig>(context.Configuration.GetSection(nameof(AutoRegisterServicesConfig)));
 
         // Logger
         services.AddLogging(_ =>
@@ -113,7 +116,9 @@ public partial class App : Application
         // Const provider
         services.AddSingleton<IAppDbExceptionConstantProvider, AppDbExceptionConstantProvider>();
 
-        ReflectionUtils.GetAllAssembliesByType(typeof(IAutoRegisterService));
+        services.RegisterAutoServices();
+        var test0 = services.GetAutoService<SomeTestAutoRegisterService>();
+        var test1 = services.GetRequiredAutoService<SomeTestAutoRegisterServiceTwo>();
     }
 
     private async void OnExit(object sender, ExitEventArgs e)
