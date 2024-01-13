@@ -4,7 +4,7 @@ using MoneyManager.Core.RegistrationServices.AutoRegister.Config;
 
 namespace MoneyManager.Core.Services.AutoRegister
 {
-    public class SomeTestAutoRegisterServiceTwo : AutoRegisterService, ISomeTestAutoRegisterService
+    public class SomeTestAutoRegisterServiceTwo : BaseAutoRegisterService, ISomeTestAutoRegisterService
     {
         public override void AutoRegister(IServiceCollection provider, Type type, AutoRegisterServiceInfo serviceInfo)
         {

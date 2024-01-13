@@ -8,7 +8,7 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister
     /// <summary>
     /// Абстракция авторег. сервиса
     /// </summary>
-    public abstract class AutoRegisterService : IAutoRegisterService
+    public abstract class BaseAutoRegisterService : IAutoRegisterService
     {
         public virtual void AutoRegister(IServiceCollection provider, Type type, AutoRegisterServiceInfo serviceInfo)
         {

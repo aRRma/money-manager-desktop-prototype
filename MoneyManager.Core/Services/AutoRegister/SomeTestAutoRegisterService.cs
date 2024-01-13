@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace MoneyManager.Core.Services.AutoRegister
 {
-    public class SomeTestAutoRegisterService : AutoRegisterService, ISomeTestAutoRegisterService
+    public class SomeTestAutoRegisterService : BaseAutoRegisterService, ISomeTestAutoRegisterService
     {
         public override void AutoRegister(IServiceCollection provider, Type type, AutoRegisterServiceInfo serviceInfo)
         {
@@ -16,7 +16,7 @@ namespace MoneyManager.Core.Services.AutoRegister
 
         public void DoWork()
         {
-            Debug.WriteLine("I do!!!!");
+            Debug.WriteLine("Just do it!!!!");
         }
     }
 }

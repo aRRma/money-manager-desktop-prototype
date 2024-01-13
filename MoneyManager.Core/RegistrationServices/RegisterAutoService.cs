@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using MoneyManager.Core.RegistrationServices.AutoRegister.Config;
 using MoneyManager.Core.RegistrationServices.AutoRegister.Interfaces;
 using MoneyManager.Core.Utils;
 using System.Reflection;
 
-namespace MoneyManager.Core.RegistrationServices.AutoRegister
+namespace MoneyManager.Core.RegistrationServices
 {
-    public static class ServiceCollectionExtensions
+    public static class RegisterAutoService
     {
         /// <summary>
         /// Зарегистрировать конкретную реализацию авто рег. сервиса
@@ -17,8 +16,10 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister
         {
             AutoRegisterServicesConfig config = provider
                 .BuildServiceProvider()
-                .GetRequiredService<IOptions<AutoRegisterServicesConfig>>()
-                .Value;
+                //.GetRequiredService<IOptions<AutoRegisterServicesConfig>>()
+                .GetRequiredService<AutoRegisterServicesConfig>()
+                //.Value;
+                ;
 
             if (!config?.ServicesInfo?.Any() ?? true)
                 return provider;
@@ -43,40 +44,7 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister
         }
 
         /// <summary>
-        /// Возвращает сервис наследник <see cref="IAutoRegisterService"/>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="provider">Провайдер сервисов</param>
-        /// <returns></returns>
-        public static T? GetAutoService<T>(this IServiceCollection provider)
-            where T : class, IAutoRegisterService, new()
-        {
-            return provider
-                .BuildServiceProvider()
-                .GetServices<IAutoRegisterService>()
-                .SingleOrDefault(x => Type.Equals(x.GetType(), typeof(T))) as T;
-        }
-
-        /// <summary>
-        /// Возвращает обязательно сервис наследник <see cref="IAutoRegisterService"/>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="provider">Провайдер сервисов</param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        public static T GetRequiredAutoService<T>(this IServiceCollection provider)
-            where T : class, IAutoRegisterService, new()
-        {
-            var service = GetAutoService<T>(provider);
-
-            if (service is null)
-                throw new InvalidOperationException($"Service by type [{typeof(T).Name}] not exist");
-
-            return service;
-        }
-
-        /// <summary>
-        /// Зарегестрировать сервис в DI
+        /// Добавить сервис в DI
         /// </summary>
         /// <param name="provider">Провайдер сервисов</param>
         /// <param name="type">Тип сервиса</param>
@@ -95,9 +63,45 @@ namespace MoneyManager.Core.RegistrationServices.AutoRegister
                 case ServiceInjectionType.Scoped:
                     provider.AddScoped(typeof(IAutoRegisterService), type);
                     break;
+                default:
+                    // TODO log
+                    break;
             }
 
             return provider;
+        }
+
+        /// <summary>
+        /// Возвращает сервис наследник <see cref="IAutoRegisterService"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="provider">Провайдер сервисов</param>
+        /// <returns></returns>
+        public static T? GetAutoService<T>(this IServiceCollection provider)
+            where T : class, IAutoRegisterService, new()
+        {
+            return provider
+                .BuildServiceProvider()
+                .GetServices<IAutoRegisterService>()
+                .SingleOrDefault(x => Equals(x.GetType(), typeof(T))) as T;
+        }
+
+        /// <summary>
+        /// Возвращает обязательно сервис наследник <see cref="IAutoRegisterService"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="provider">Провайдер сервисов</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static T GetRequiredAutoService<T>(this IServiceCollection provider)
+            where T : class, IAutoRegisterService, new()
+        {
+            var service = provider.GetAutoService<T>();
+
+            if (service is null)
+                throw new InvalidOperationException($"Service by type [{typeof(T).Name}] not exist");
+
+            return service;
         }
 
         private static void ProcessRegistrationService(this IServiceCollection provider, AutoRegisterServiceInfo serviceInfo)

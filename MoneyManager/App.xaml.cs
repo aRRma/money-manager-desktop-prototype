@@ -1,17 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MoneyManager.Contracts.Services;
 using MoneyManager.Contracts.Views;
 using MoneyManager.Core.Constants;
 using MoneyManager.Core.Contracts.Services;
-using MoneyManager.Core.DataBase;
+using MoneyManager.Core.DataBase.Config;
 using MoneyManager.Core.RegistrationServices;
-using MoneyManager.Core.RegistrationServices.AutoRegister;
-using MoneyManager.Core.RegistrationServices.AutoRegister.Interfaces;
-using MoneyManager.Core.RegistrationServices.AutoRegister.Options;
+using MoneyManager.Core.RegistrationServices.AutoRegister.Config;
 using MoneyManager.Core.Services;
 using MoneyManager.Core.Services.AutoRegister;
 using MoneyManager.Models;
@@ -22,6 +20,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoneyManager;
 
@@ -47,7 +46,7 @@ public partial class App : Application
 
     private async void OnStartup(object sender, StartupEventArgs e)
     {
-        var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location)!;
 
         // Host.CreateDefaultBuilder сам добавляет appsettings.json автоматом
         // Но как вариант так можно подгружать другие конфиги
@@ -63,18 +62,29 @@ public partial class App : Application
             })
             .ConfigureServices(ConfigureServices)
             .Build();
-
         await _host.StartAsync();
     }
 
     private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
-        // Configuration
+        // конфиг из сервиса или из контекста можно достать
         _configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         // TODO прикрутить валидацию конфигов
-        services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
-        services.Configure<AppDbConfig>(context.Configuration.GetSection(nameof(AppDbConfig)));
-        services.Configure<AutoRegisterServicesConfig>(context.Configuration.GetSection(nameof(AutoRegisterServicesConfig)));
+        services.Configure<AppConfig>(_configuration.GetSection(nameof(AppConfig)));
+        services.Configure<AutoRegisterServicesConfig>(_configuration.GetSection(nameof(AutoRegisterServicesConfig)));
+        //services.Configure<DataBaseConfig>(context.Configuration.GetSection(nameof(DataBaseConfig)));
+
+
+        services.AddOptions<DataBaseConfig>()
+            .BindConfiguration(nameof(DataBaseConfig))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+
+        // модный вариант регистрации чтобы отказаться от связи с IOptions в сервисах
+        services.AddSingleton(_ => _.GetRequiredService<IOptions<AppConfig>>().Value);
+        services.AddSingleton(_ => _.GetRequiredService<IOptions<AutoRegisterServicesConfig>>().Value);
+        services.AddSingleton(_ => _.GetRequiredService<IOptions<DataBaseConfig>>().Value);
 
         // Logger
         services.AddLogging(_ =>
@@ -89,9 +99,8 @@ public partial class App : Application
 
         // Core Services
         services.AddSingleton<IFileService, FileService>();
-        services.AddDbContextFactory<AppDbContext>(_ => _
-            .UseSqlite($"Data Source = {_configuration["AppDbConfig:DbName"]}")
-            .LogTo(Console.WriteLine));
+        services.AddDatabase();
+        
         services.AddRepositories();
         services.AddValidators();
 

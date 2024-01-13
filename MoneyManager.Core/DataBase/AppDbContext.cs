@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using MoneyManager.Core.DataBase.Config;
 using MoneyManager.Core.DataBase.EntityConfigurations;
 using MoneyManager.Core.DataBase.Models;
 using MoneyManager.Core.DataBase.Models.Constants;
@@ -26,10 +26,10 @@ namespace MoneyManager.Core.DataBase
         /// Конструктор с параметрами
         /// </summary>
         /// <param name="options"></param>
-        public AppDbContext(DbContextOptions<AppDbContext> options, IOptions<AppDbConfig> config)
+        public AppDbContext(DbContextOptions<AppDbContext> options, DataBaseConfig config)
             : base(options)
         {
-            if (config?.Value?.AllowForceRecreateBase ?? false)
+            if (config?.AllowForceRecreateBase ?? false)
                 ForceRecreateBase();
         }
 

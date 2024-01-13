@@ -8,7 +8,7 @@ namespace MoneyManager.Core.DataBase.Config
     public class DataBaseCredential
     {
         [Required]
-        public string Login { get; init; }
+        public string Username { get; init; }
 
         [Required]
         public string Password { get; init; }
